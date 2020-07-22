@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
+import com.qq.e.ads.cfg.MultiProcessFlag;
 import com.qq.e.comm.managers.GDTADManager;
 import com.qq.e.comm.managers.setting.GlobalSetting;
 
@@ -16,7 +17,7 @@ import com.qq.e.comm.managers.setting.GlobalSetting;
  * 用于广告初始化
  * 此处不使用用单例模式，防止资源占用
  */
-public class ADManager {
+public class ADConfig {
 
     /**
      * 广告默认初始化
@@ -55,7 +56,15 @@ public class ADManager {
      * 广点通 设置渠道，可选
      * @param channel
      */
-    public static void setChannel(int channel){
+    public static void setGDTChannel(int channel){
         GlobalSetting.setChannel(channel);
+    }
+
+    /**
+     * 广点通
+     * @param ismulti 是否支持多进程
+     */
+    public static void setGDTMultiProcess(boolean ismulti){
+        MultiProcessFlag.setMultiProcess(ismulti);
     }
 }
