@@ -1,0 +1,3 @@
+rootProject.name='ModuleTest'
+include ':app'
+include ':admanager'
