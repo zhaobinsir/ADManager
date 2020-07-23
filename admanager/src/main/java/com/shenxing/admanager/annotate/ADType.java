@@ -26,22 +26,22 @@ import static java.lang.annotation.ElementType.TYPE;
 public @interface ADType {
 
     /**
-     * 开屏
+     * 开屏 gdt$wm
      */
     String SPLASH_AD="Splash";
 
     /**
-     * banner2.0
+     * banner2.0 gdt$wm
      */
     String BANNER2_AD="Banner2";
 
     /**
-     * 插屏2.0
+     * 插屏2.0 gdt$wm
      */
     String UNINTER2_AD="UnifiedInterstitialAD";
 
     /**
-     * 原生广告
+     * 原生广告 gdt$wm
      */
     String NATIVE_AD="NativeExpressAD";
 
@@ -56,7 +56,7 @@ public @interface ADType {
     String NATIVEUN_AD="NativeUnifiedAD";
 
     /**
-     * 激励视频
+     * 激励视频 gdt$wm
      */
     String REWARD_AD="RewardVideoAD";
 
@@ -64,4 +64,10 @@ public @interface ADType {
      * H5 激励视频
      */
     String H5_AD="HybridAD";
+
+    //全屏视频（TTFullScreenVideoAd）
+
+//    Draw 信息流 个性化模板Draw信息流
+
+//    Dislike 逻辑
 }

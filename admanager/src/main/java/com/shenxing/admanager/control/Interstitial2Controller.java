@@ -10,6 +10,7 @@ import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
  * Created by zhaobinsir
  * on 2020/7/22.
  * 插屏2.0
+ * 具体参数回调参考： https://developers.adnet.qq.com/doc/android/union/union_interstitial2_0
  */
 public class Interstitial2Controller {
 
@@ -86,9 +87,7 @@ public class Interstitial2Controller {
     }
 
 
-    //如下视频参数设置
-
-
+    //如下视频参数设置 可以不设置使用默认
     public int getMinVideoDuration() {
         return minVideoDuration;
     }

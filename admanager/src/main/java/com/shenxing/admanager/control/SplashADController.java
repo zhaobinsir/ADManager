@@ -11,6 +11,7 @@ import com.shenxing.admanager.doc.GDTDocument;
 /**
  * Created by zhaobinsir
  * on 2020/7/22.
+ * 具体方法参数意义 参考：https://developers.adnet.qq.com/doc/android/union/union_splash
  */
 public class SplashADController {
 
@@ -36,7 +37,7 @@ public class SplashADController {
     }
 
     //预加载，不展示广告
-    public void fetchSplashADOnly(Activity activity, ViewGroup adContainer, View skipContainer,
+    public void fetchSplashADOnly(Activity activity, View skipContainer,
                                   String posId, SplashADListener adListener, int fetchDelay) {
         splashAD = new SplashAD(activity, skipContainer, posId, adListener, fetchDelay);
         splashAD.fetchAdOnly();
