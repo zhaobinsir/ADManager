@@ -1,9 +1,9 @@
 package com.shenxing.admanager.control.manager;
 
 import com.shenxing.admanager.annotate.ADType;
-import com.shenxing.admanager.control.Banner2Controller;
-import com.shenxing.admanager.control.Interstitial2Controller;
-import com.shenxing.admanager.control.SplashADController;
+import com.shenxing.admanager.control.gdt.Banner2Controller;
+import com.shenxing.admanager.control.gdt.Interstitial2Controller;
+import com.shenxing.admanager.control.gdt.SplashADController;
 
 /**
  * Created by zhaobinsir

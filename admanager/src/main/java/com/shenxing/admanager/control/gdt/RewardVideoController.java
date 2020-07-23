@@ -1,4 +1,4 @@
-package com.shenxing.admanager.control;
+package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
 import android.os.SystemClock;

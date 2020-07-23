@@ -51,7 +51,7 @@ public @interface ADType {
     String NATIVE2_AD="NativeExpressAD2";
 
     /**
-     * 自渲染 2.0
+     * 自渲染 2.0 暂不实现
      */
     String NATIVEUN_AD="NativeUnifiedAD";
 
@@ -61,7 +61,7 @@ public @interface ADType {
     String REWARD_AD="RewardVideoAD";
 
     /**
-     * H5 激励视频
+     * H5 激励视频 暂无法实现
      */
     String H5_AD="HybridAD";
 
