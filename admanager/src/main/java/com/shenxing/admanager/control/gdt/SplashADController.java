@@ -1,8 +1,8 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
@@ -30,14 +30,14 @@ public class SplashADController {
      * @param fetchDelay    拉取广告的超时时长：取值范围[3000, 5000]，设为0表示使用广点通SDK默认的超时时长。
      *
      */
-    public void fetchSplashADShow(Activity activity, ViewGroup adContainer, View skipContainer,
+    public void fetchSplashADShow(Activity activity, ViewGroup adContainer, TextView skipContainer,
                                String posId, SplashADListener adListener, int fetchDelay) {
         splashAD = new SplashAD(activity, skipContainer, posId, adListener, fetchDelay);
         splashAD.fetchAndShowIn(adContainer);
     }
 
     //预加载，不展示广告
-    public void fetchSplashADOnly(Activity activity, View skipContainer,
+    public void fetchSplashADOnly(Activity activity, TextView skipContainer,
                                   String posId, SplashADListener adListener, int fetchDelay) {
         splashAD = new SplashAD(activity, skipContainer, posId, adListener, fetchDelay);
         splashAD.fetchAdOnly();

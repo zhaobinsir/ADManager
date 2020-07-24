@@ -16,10 +16,11 @@ import com.shenxing.admanager.callback.RewardStatusListener;
  * 激励视频
  * 参数文档：https://developers.adnet.qq.com/doc/android/union/union_reward_video
  */
-public class RewardVideoController {
+public class RewardVideoController implements RewardStatusListener{
 
     private RewardVideoAD rewardVideoAD;
     private RewardStatusListener listener;
+
 
     /**
      * 预加载激励视频
@@ -28,7 +29,7 @@ public class RewardVideoController {
      * @param listener
      * @param volumeOn 是否开启声音
      */
-    public void onPrepareAd(@NonNull Activity context, @NonNull String posid,@NonNull RewardStatusListener listener,boolean volumeOn){
+    public void onPrepareAd(@NonNull Activity context, @NonNull String posid,boolean volumeOn,@NonNull RewardStatusListener listener){
         this.listener=listener;
         rewardVideoAD = new RewardVideoAD(context, posid, listener, volumeOn);
         rewardVideoAD.loadAD();
@@ -45,15 +46,24 @@ public class RewardVideoController {
                 if (SystemClock.elapsedRealtime() < (rewardVideoAD.getExpireTimestamp() - delta)) {
                     rewardVideoAD.showAD();
                 } else {
-                    listener.onAdExpired();
+                    if (listener != null)
+                        listener.onAdExpired();
                 }
             } else {
-                listener.onAdShowed();
+                if (listener != null)
+                    listener.onAdShowed();
             }
         } else {
-            listener.onAdInvalid();
+            if (listener != null)
+                listener.onAdInvalid();
         }
     }
+
+    //直接展示激励视频,无回调
+    public void preAndShow(@NonNull Activity context, @NonNull String posid, boolean volumeOn){
+        preAndShow(context,posid,volumeOn,null);
+    }
+
 
     /**
      * 直接展示激励视频
@@ -63,7 +73,12 @@ public class RewardVideoController {
      * @param listener
      * @param volumeOn
      */
-    public void preAndShow(@NonNull Activity context, @NonNull String posid, @NonNull  RewardStatusListener listener, boolean volumeOn){
+    public void preAndShow(@NonNull Activity context, @NonNull String posid, boolean volumeOn ,RewardStatusListener listener){
+        if (listener==null) {
+            rewardVideoAD=new RewardVideoAD(context,posid,this,volumeOn);
+            rewardVideoAD.loadAD();
+            return;
+        }
         this.listener=listener;
         rewardVideoAD = new RewardVideoAD(context, posid, new RewardVideoADListener() {
             @Override
@@ -115,7 +130,67 @@ public class RewardVideoController {
         rewardVideoAD.loadAD();
     }
 
-    public RewardStatusListener getListener() {
+    private RewardStatusListener getListener() {
         return listener;
+    }
+
+    @Override
+    public void onAdExpired() {
+
+    }
+
+    @Override
+    public void onAdShowed() {
+
+    }
+
+    @Override
+    public void onAdInvalid() {
+
+    }
+
+    @Override
+    public void onADLoad() {
+        showAd();
+    }
+
+    @Override
+    public void onVideoCached() {
+
+    }
+
+    @Override
+    public void onADShow() {
+
+    }
+
+    @Override
+    public void onADExpose() {
+
+    }
+
+    @Override
+    public void onReward() {
+
+    }
+
+    @Override
+    public void onADClick() {
+
+    }
+
+    @Override
+    public void onVideoComplete() {
+
+    }
+
+    @Override
+    public void onADClose() {
+
+    }
+
+    @Override
+    public void onError(AdError adError) {
+
     }
 }

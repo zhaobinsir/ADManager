@@ -30,12 +30,13 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
     public static final String TAG ="NativeController";
 
     private NativeExpressAD nativeExpressAD;
-    private boolean loadMoreAd;//是否加载更多广告中
+    private boolean loadMoreAd;//加载更多广告中
     private List<NativeExpressADView> adList=new ArrayList<>();
     private int adCount;
     private NativeLoadMoreListener loadMoreListener;
     private ViewGroup container;
     private NativeStatusAdListener statusAdListener;//预留接口
+    private boolean interrupt;//中断请求和广告回调，防止数据加载过多 页面退出时仍发生回调
 
     /**
      * 加载native 默认宽高
@@ -48,14 +49,6 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
         setVdieoConfig();
         nativeExpressAD.loadAD(adcount);
     }
-    //默认直接展示广告 单条广告使用
-    public void loadNativeAd(@NonNull Activity context,@NonNull ViewGroup viewGroup ,@NonNull String posid,ADSize adSize) {
-        this.container=viewGroup;
-        nativeExpressAD = new NativeExpressAD(context, adSize==null?getADSize():adSize, posid, getStatusListener());
-        setVdieoConfig();
-        nativeExpressAD.loadAD(1);
-    }
-
 
     /**
      * 加载native 自定义宽高
@@ -70,6 +63,15 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
         nativeExpressAD.loadAD(adcount);
     }
 
+    //默认直接展示广告 单条广告使用
+    public void loadAndShowNativeAd(@NonNull Activity context,@NonNull ViewGroup viewGroup ,@NonNull String posid) {
+        this.container=viewGroup;
+        nativeExpressAD = new NativeExpressAD(context, getADSize(), posid, getStatusListener());
+        setVdieoConfig();
+        nativeExpressAD.loadAD(1);
+    }
+
+
 
     private NativeExpressAD.NativeExpressADListener getStatusListener() {
         return new NativeExpressAD.NativeExpressADListener() {
@@ -80,6 +82,10 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
 
             @Override
             public void onADLoaded(List<NativeExpressADView> list) {
+                if (list.size()==0) {
+                    Log.e(TAG, "onADLoaded: List<NativeExpressADView> list size 0");
+                    return;
+                }
                 if (container.getVisibility() != View.VISIBLE) {
                     container.setVisibility(View.VISIBLE);
                 }
@@ -87,7 +93,7 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
                 if (container.getChildCount() > 0) {
                     container.removeAllViews();
                 }
-                NativeExpressADView  nativeAd = adList.get(0);
+                NativeExpressADView  nativeAd = list.get(0);
                 container.addView(nativeAd);
                 nativeAd.render();
             }
@@ -140,20 +146,19 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
      * @param posid
      * @param adcount
      */
-    public synchronized void loadNativeAdMore(@NonNull Activity context, ViewGroup viewGroup,@NonNull String posid, @IntRange(from = 11,to = 100) int adcount, NativeLoadMoreListener listener){
+    public synchronized void loadNativeAdMore(@NonNull Activity context,@NonNull String posid, @IntRange(from = 11,to = 100) int adcount,@NonNull NativeLoadMoreListener listener){
         if (loadMoreAd==true) {
             Log.d(TAG, "loadNativeAdMore: not load over,please wait");
             return;
         }
-        this.container=viewGroup;
         loadMoreAd=true;
         adList.clear();
         adCount=adcount;
         this.loadMoreListener=listener;
+        nativeExpressAD = new NativeExpressAD(context, getADSize(), posid, this);
         ///参数设置
         setVdieoConfig();
         //
-        nativeExpressAD = new NativeExpressAD(context, getADSize(), posid, this);
         onRqCount();
     }
 
@@ -161,10 +166,10 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
      * 请求广告
      */
     private void onRqCount() {
-        if (adCount>10) {
+        if (adCount>=10) {
             adCount=adCount-10;
             nativeExpressAD.loadAD(10);
-        }else if(adCount<10&&adCount>0){
+        }else if(adCount>0&&adCount<10){
             nativeExpressAD.loadAD(adCount);
             adCount=0;
         }else if(adCount==0){
@@ -174,10 +179,10 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
 
 
     private void setVdieoConfig() {
-        //        nativeExpressAD.setVideoOption(initVideoOption());
+          nativeExpressAD.setVideoOption(initVideoOption());
 //        nativeExpressAD.setMinVideoDuration(getMinVideoDuration());
 //        nativeExpressAD.setMaxVideoDuration(getMaxVideoDuration());
-//        nativeExpressAD.setVideoPlayPolicy();
+        nativeExpressAD.setVideoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS);
     }
 
 
@@ -207,6 +212,10 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
 
     @Override
     public void onADLoaded(List<NativeExpressADView> list) {
+        if (interrupt) {
+            Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+            return;
+        }
         adList.addAll(list);
         if (adCount>0) {
             onRqCount();
@@ -274,6 +283,17 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
             loadMoreListener.onNoAd(adList);//存在之前加载成功的数据，的可能性
             adList.clear();
         }
-
     }
+
+
+    /**
+     * 若调用了 loadNativeAdMore，建议调用此函数
+     */
+    public void destroy(){
+        interrupt=true;
+        adCount=0;
+        loadMoreAd=false;
+        adList.clear();
+    }
+
 }

@@ -31,6 +31,7 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
     private List<NativeExpressADData2> adList=new ArrayList<>();
     private int adCount;
     private NativeLoadMoreListener listener;
+    private boolean interrupt;//中断请求和广告回调，防止数据加载过多 页面退出时仍发生回调
 
     /**
      * 加载native 默认宽高
@@ -41,7 +42,7 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
     public void loadNative2Ad(@NonNull Activity context, @NonNull String posid, @IntRange(from = 1,to = 10) int adcount, @NonNull NativeExpressAD2.AdLoadListener listener) {
         try {
             mNativeExpressAD2 = new NativeExpressAD2(context, posid, listener);
-            mNativeExpressAD2.setAdSize(0,0);
+            mNativeExpressAD2.setAdSize(-1,0);
             // 如果您在平台上新建原生模板广告位时，选择了支持视频，那么可以进行个性化设置（可选）
             mNativeExpressAD2.setVideoOption2(getVideoOption());
             mNativeExpressAD2.loadAd(adcount);
@@ -125,6 +126,10 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
 
     @Override
     public void onLoadSuccess(List<NativeExpressADData2> list) {
+        if (interrupt) {
+            Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+            return;
+        }
         adList.addAll(list);
         if (adCount>0) {
             onRqCount();
@@ -148,10 +153,10 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
      * 请求广告
      */
     private void onRqCount() {
-        if (adCount>10) {
+        if (adCount>=10) {
             adCount=adCount-10;
             mNativeExpressAD2.loadAd(10);
-        }else if(adCount<10&&adCount>0){
+        }else if(adCount>0&&adCount<10){
             mNativeExpressAD2.loadAd(adCount);
             adCount=0;
         }else if(adCount==0){
@@ -164,6 +169,16 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
     private void reset() {
         loadMoreAd = false;
         adCount = 0;
+    }
+
+    /**
+     * 若调用了 loadNativeAdMore，建议调用此函数
+     */
+    public void destroy(){
+        interrupt=true;
+        adCount=0;
+        loadMoreAd=false;
+        adList.clear();
     }
 
 }

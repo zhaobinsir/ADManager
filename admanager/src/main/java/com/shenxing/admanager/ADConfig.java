@@ -48,8 +48,9 @@ public class ADConfig {
      * @param gdtId 广点通id
      * @param config 网盟广告商的具体配置，可自定义 参考如上说明配置
      */
-    public static void initAD(@NonNull Context context, @NonNull String gdtId,@NonNull TTAdConfig.Builder config){
+    public static void initAD(@NonNull Context context, @NonNull String gdtId,@NonNull String wmId,@NonNull TTAdConfig.Builder config){
         GDTADManager.getInstance().initWith(context, gdtId);
+        config.appId(wmId);
         TTAdSdk.init(context, config.build());
     }
     /**
