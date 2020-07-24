@@ -2,7 +2,7 @@ package com.shenxing.admanager.doc;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 广点通文档，包含错误码
  */
 public class GDTDocument {

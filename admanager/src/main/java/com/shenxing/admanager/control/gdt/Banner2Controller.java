@@ -15,7 +15,7 @@ import com.shenxing.admanager.doc.GDTDocument;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * banner2.0 控制类
  * 接口详情考文档：https://developers.adnet.qq.com/doc/android/union/union_banner2_0
  */

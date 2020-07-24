@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/23.
+ * on 2020/7/24.
  * 自渲染，"需要根据具体需求"编写xml渲染模板，没有固定模板，此处不再实现
  * 仅展示初始化 不调用
  */

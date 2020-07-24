@@ -10,7 +10,7 @@ import com.shenxing.admanager.doc.GDTDocument;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 具体方法参数意义 参考：https://developers.adnet.qq.com/doc/android/union/union_splash
  */
 public class SplashADController {

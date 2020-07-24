@@ -4,7 +4,7 @@ import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/23.
+ * on 2020/7/24.
  */
 public interface RewardStatusListener extends RewardVideoADListener {
 

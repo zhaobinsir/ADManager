@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 插屏2.0
  * 具体参数回调参考： https://developers.adnet.qq.com/doc/android/union/union_interstitial2_0
  */

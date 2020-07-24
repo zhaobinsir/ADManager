@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/23.
+ * on 2020/7/24.
  * 原生广告渲染2.0 注意注意 官网说明： 目前模板2.0功能处于内测中，请开发者联系对应商务开通权限。
  * 回调参考文档链接：https://developers.adnet.qq.com/doc/android/union/union_native_express2_0
  */

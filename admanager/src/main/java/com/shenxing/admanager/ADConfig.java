@@ -13,7 +13,7 @@ import com.qq.e.comm.managers.setting.GlobalSetting;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 用于广告初始化
  * 此处不使用用单例模式，防止资源占用
  */

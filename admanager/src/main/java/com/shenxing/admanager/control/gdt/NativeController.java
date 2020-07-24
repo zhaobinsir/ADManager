@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/23.
+ * on 2020/7/24.
  * 原生广告
  * 广告回调参数说明参考： https://developers.adnet.qq.com/doc/android/union/union_native_express
  */

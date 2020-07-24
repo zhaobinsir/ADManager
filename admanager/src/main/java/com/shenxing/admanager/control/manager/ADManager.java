@@ -8,10 +8,11 @@ import com.shenxing.admanager.control.gdt.NativeController;
 import com.shenxing.admanager.control.gdt.NativeUnifiedController;
 import com.shenxing.admanager.control.gdt.RewardVideoController;
 import com.shenxing.admanager.control.gdt.SplashADController;
+import com.shenxing.admanager.control.wm.NativeControllerWm;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 广告类型管理类
  */
 public class ADManager{
@@ -59,6 +60,9 @@ public class ADManager{
                     adObject= (T) new RewardVideoController();
                     break;
                 case ADType.H5_AD:
+                    break;
+                case ADType.NATIVE_WMAD:
+                    adObject= (T) new NativeControllerWm();
                     break;
                 default:
                     break;

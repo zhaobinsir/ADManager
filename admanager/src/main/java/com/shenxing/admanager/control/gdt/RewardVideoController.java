@@ -12,7 +12,7 @@ import com.shenxing.admanager.callback.RewardStatusListener;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/23.
+ * on 2020/7/24.
  * 激励视频
  * 参数文档：https://developers.adnet.qq.com/doc/android/union/union_reward_video
  */

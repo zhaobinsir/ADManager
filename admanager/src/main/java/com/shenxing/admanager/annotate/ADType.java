@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.TYPE;
 
 /**
  * Created by zhaobinsir
- * on 2020/7/22.
+ * on 2020/7/24.
  * 定义广告类型
  */
 @Retention(RetentionPolicy.SOURCE)
