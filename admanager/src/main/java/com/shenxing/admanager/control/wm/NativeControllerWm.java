@@ -14,6 +14,7 @@ import com.bytedance.sdk.openadsdk.FilterWord;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.shenxing.admanager.callback.NativeLoadMoreListener;
@@ -53,6 +54,7 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
             weakReference.clear();
         }
         weakReference=new WeakReference<>(context);
+        mTTAdNative =TTAdSdk.getAdManager().createAdNative(context);
         this.adSlot=adSlot;
         mTTAdNative.loadNativeExpressAd(adSlot, listener);
     }
@@ -89,6 +91,7 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
             weakReference.clear();
         }
         weakReference=new WeakReference<>(context);
+        mTTAdNative =TTAdSdk.getAdManager().createAdNative(context);
         Point screenSize = new Point();
         context.getWindowManager().getDefaultDisplay().getSize(screenSize);//获取屏幕宽高信息
         adSlot=  new AdSlot.Builder()
@@ -122,6 +125,7 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
             weakReference.clear();
         }
         weakReference=new WeakReference<>(context);
+        mTTAdNative =TTAdSdk.getAdManager().createAdNative(context);
         Point screenSize = new Point();
         context.getWindowManager().getDefaultDisplay().getSize(screenSize);//获取屏幕宽高信息
         adSlot=  new AdSlot.Builder()
@@ -279,6 +283,9 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
 
     //在合适的时机，释放广告的资源 注意：单个native时调用
     protected void release() {
+        if (weakReference != null) {
+            weakReference.clear();
+        }
         if (mTTAd != null) {
             //调用destroy()方法释放
             mTTAd.destroy();
@@ -303,7 +310,7 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
         adCount = 0;
     }
 
-    //加载更多的回调，此处为了
+    //加载更多的回调
     class LoadMoreListener implements TTAdNative.NativeExpressAdListener{
 
         @Override
