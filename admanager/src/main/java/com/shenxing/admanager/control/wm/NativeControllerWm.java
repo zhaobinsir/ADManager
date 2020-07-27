@@ -19,6 +19,7 @@ import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.shenxing.admanager.callback.NativeLoadMoreListener;
 import com.shenxing.admanager.utils.DislikeDialog;
+import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.List;
  * Created by zhaobinsir
  * on 2020/7/24.
  * 广点通
+ * 信息流广告
  */
 public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
 
@@ -121,13 +123,11 @@ public class NativeControllerWm implements TTAdNative.NativeExpressAdListener {
                            @NonNull Integer width,
                            @NonNull Integer height,
                            TTAdNative.NativeExpressAdListener listener){
-        if (weakReference != null) {
-            weakReference.clear();
+        if(weakReference==null||mTTAdNative==null){
+            weakReference=new WeakReference<>(context);
+            mTTAdNative =TTAdSdk.getAdManager().createAdNative(context);
         }
-        weakReference=new WeakReference<>(context);
-        mTTAdNative =TTAdSdk.getAdManager().createAdNative(context);
-        Point screenSize = new Point();
-        context.getWindowManager().getDefaultDisplay().getSize(screenSize);//获取屏幕宽高信息
+        Point screenSize= UIUtils.getScreenInfo(weakReference.get());
         adSlot=  new AdSlot.Builder()
                 .setCodeId(coidid) //广告位id
                 .setSupportDeepLink(true)

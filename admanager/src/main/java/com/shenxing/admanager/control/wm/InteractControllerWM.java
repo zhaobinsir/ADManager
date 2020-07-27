@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -26,103 +25,87 @@ import java.util.List;
 /**
  * Created by zhaobinsir
  * on 2020/7/27.
- * 参数具体参考 https://ad.oceanengine.com/union/media/union/download/detail?id=3&docId=5de8d9b6b1afac001293310c&osType=android
- * banner广告
+ * 插屏广告
  */
-public class BannerControllerWM {
+public class InteractControllerWM {
 
-    public static final String TAG = "BannerControllerWM";
+    public static final String TAG = "InteractControllerWM";
 
     private TTAdNative mTTAdNative;
     private TTNativeExpressAd mTTAd;
-    private TTAdDislike mTTAdDislike;
     private AdSlot adSlot;
-    WeakReference<Activity> weakReference;
-
-    private int intervalTime = -1;//设置轮播时间
+    private WeakReference<Activity> weakReference;
 
     public Integer width;
     public Integer height;
-    private int bannerNum=-1;//暂时最多仅支持3条
+    private int bannerNum = -1;//暂时最多仅支持3条
 
     /**
-     * 请求2-3条banner，回调需要开发者自行处理
+     * 请求2-3条插屏，回调需要开发者自行处理
+     *
      * @param context
      * @param codeId
      * @param bannerNum
      * @param listener
      */
-    public void loadBannerMore(@NonNull Activity context,
-                               @NonNull String codeId,
-                               @IntRange(from = 2,to = 3) int bannerNum,
-                               @NonNull TTAdNative.NativeExpressAdListener listener){
-        this.bannerNum=bannerNum;
-        loadBanner(context,codeId,null,listener);
+    public void loadExpressAdMore(@NonNull Activity context,
+                                  @NonNull String codeId,
+                                  @IntRange(from = 2, to = 3) int bannerNum,
+                                  @NonNull TTAdNative.NativeExpressAdListener listener) {
+        this.bannerNum = bannerNum;
+        loadExpressAd(context, codeId, listener);
     }
 
-    /**
-     *  请求banner 开发者懒得处理回调
-     * @param context
-     * @param codeId
-     * @param container
-     */
-    public void loadBanner(@NonNull Activity context,
-                           @NonNull String codeId,
-                           @NonNull ViewGroup container
-                          ) {
-        loadBanner(context,codeId,container,null);
-    }
 
     /**
-     * 请求banner 开发者回调自己处理
+     * 加载插屏，开发者不关心回调
      *
      * @param context
      * @param codeId
      */
-    public void loadBanner(@NonNull Activity context,
-                           @NonNull String codeId,
-                           @NonNull TTAdNative.NativeExpressAdListener listener
+    public void loadExpressAd(@NonNull Activity context,
+                               @NonNull String codeId
     ) {
-        loadBanner(context,  codeId, null,listener);
+        loadExpressAd(context, codeId, null);
     }
 
     /**
-     * 请求banner，不关心回调
+     * 加载插屏，开发者自己处理回调
      *
      * @param context
-     * @param container 容器
-     * @param codeId    广告id
-     * @param listener  监听
+     * @param codeId   广告id
+     * @param listener 插屏回调
      */
-    private void loadBanner(@NonNull Activity context,
-                            @NonNull String codeId,
-                           final ViewGroup container,
-                           TTAdNative.NativeExpressAdListener listener) {
-        if (mTTAdNative == null||weakReference==null) {
+    public void loadExpressAd(@NonNull Activity context,
+                              @NonNull String codeId,
+                              TTAdNative.NativeExpressAdListener listener
+    ) {
+        if (mTTAdNative==null||weakReference==null) {
             mTTAdNative = TTAdSdk.getAdManager().createAdNative(context);
             weakReference = new WeakReference<>(context);
         }
-        Point screenSize= UIUtils.getScreenInfo(weakReference.get());
-        Log.d(TAG, "loadBanner: screenSize " + screenSize.x);
+        Point screenSize = UIUtils.getScreenInfo(weakReference.get());
         adSlot = new AdSlot.Builder()
                 .setCodeId(codeId) //广告位id
                 .setSupportDeepLink(true)
-                .setAdCount(bannerNum==-1?1:bannerNum) //请求广告数量为1到3条
+                .setAdCount(bannerNum == -1 ? 1 : bannerNum) //请求广告数量为1到3条
                 .setExpressViewAcceptedSize(width == null ? screenSize.x : width, height == null ? 0 : height) //期望模板广告view的size,单位dp
+                .setImageAcceptedSize(640, 320)//这个参数设置即可，不影响个性化模板广告的size
                 .build();
+        //step5:请求广告，对请求回调的广告作渲染处理
         if (listener == null) {
-            bindBanner(container);
+            bindAd();
         } else {
-            mTTAdNative.loadBannerExpressAd(adSlot, listener);
+            mTTAdNative.loadInteractionExpressAd(adSlot, listener);
         }
+
     }
 
-    private void bindBanner(final ViewGroup container) {
-        mTTAdNative.loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+    private void bindAd() {
+        mTTAdNative.loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.d(TAG, "onError: code,message " + code + "," + message);
-                container.removeAllViews();
+                Log.e(TAG, "load error : " + code + ", " + message);
             }
 
             @Override
@@ -130,87 +113,85 @@ public class BannerControllerWM {
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
-                container.removeAllViews();
                 mTTAd = ads.get(0);
-                if (intervalTime != -1) {
-                    mTTAd.setSlideIntervalTime(Math.max(intervalTime, 30 * 1000));
-                }
-                bindAdListener(mTTAd, container);
+                bindAdListener(mTTAd);
                 mTTAd.render();
             }
         });
     }
 
-    //公开此方法
-    public void bindAdListener(@NonNull TTNativeExpressAd ad, @NonNull final ViewGroup container) {
-        ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+    /**
+     * 在 NativeExpressAdListener。onNativeExpressAdLoad中 绑定广告监听，
+     * @param ad
+     */
+    public void bindAdListener(TTNativeExpressAd ad) {
+        ad.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
+            @Override
+            public void onAdDismiss() {
+                Log.d(TAG, "onAdDismiss: ADClose");
+            }
+
             @Override
             public void onAdClicked(View view, int type) {
-
+                Log.d(TAG, "onAdClicked");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-
+                Log.d(TAG, "onAdShow");
             }
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
+                Log.e("ExpressView", "render fail:");
             }
 
             @Override
             public void onRenderSuccess(View view, float width, float height) {
                 Log.e("ExpressView", "render suc:");
                 //返回view的宽高 单位 dp
-                container.removeAllViews();
-                container.addView(view);
+                mTTAd.showInteractionExpressAd(weakReference.get());
             }
         });
-        //dislike设置
-        bindDislike(ad, false, container);
+        bindDislike(ad, false);
         if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             return;
         }
         ad.setDownloadListener(new TTAppDownloadListener() {
             @Override
-            public void onIdle() {//开始下载
-
+            public void onIdle() {
+                Log.d(TAG, "onIdle: ");
             }
 
             @Override
             public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-
+                Log.d(TAG, "onDownloadActive: ");
             }
 
             @Override
             public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-
+                Log.d(TAG, "onDownloadPaused: ");
             }
 
             @Override
             public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-
+                Log.d(TAG, "onDownloadFailed: ");
             }
 
             @Override
             public void onInstalled(String fileName, String appName) {
-
+                Log.d(TAG, "onInstalled: ");
             }
 
             @Override
             public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+                Log.d(TAG, "onDownloadFinished: ");
 
             }
         });
     }
 
-    /**
-     * 设置广告的不喜欢, 注意：强烈建议设置该逻辑，如果不设置dislike处理逻辑，则模板广告中的 dislike区域不响应dislike事件。
-     *
-     * @param ad
-     * @param customStyle 是否自定义样式，true:样式自定义
-     */
-    private void bindDislike(@NonNull TTNativeExpressAd ad, boolean customStyle, @NonNull final ViewGroup container) {
+    private void bindDislike(TTNativeExpressAd ad, boolean customStyle) {
         if (customStyle) {
             //使用自定义样式
             List<FilterWord> words = ad.getFilterWords();
@@ -223,8 +204,6 @@ public class BannerControllerWM {
                 @Override
                 public void onItemClick(FilterWord filterWord) {
                     //屏蔽广告
-                    //用户选择不喜欢原因后，移除广告展示
-                    container.removeAllViews();
                 }
             });
             ad.setDislikeDialog(dislikeDialog);
@@ -234,12 +213,12 @@ public class BannerControllerWM {
         ad.setDislikeCallback(weakReference.get(), new TTAdDislike.DislikeInteractionCallback() {
             @Override
             public void onSelected(int position, String value) {
-                //用户选择不喜欢原因后，移除广告展示
-                container.removeAllViews();
+                //TToast.show(mContext, "反馈了 " + value);
             }
 
             @Override
             public void onCancel() {
+
             }
 
             @Override
@@ -254,7 +233,7 @@ public class BannerControllerWM {
     /**
      * 资源释放
      */
-    public void release(){
+    public void release() {
         if (weakReference != null) {
             weakReference.clear();
         }
@@ -262,6 +241,4 @@ public class BannerControllerWM {
             mTTAd.destroy();
         }
     }
-
-
 }

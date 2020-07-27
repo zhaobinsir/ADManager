@@ -2,6 +2,7 @@ package com.shenxing.admanager.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -21,6 +22,12 @@ public class UIUtils {
         final float scale = context.getResources().getDisplayMetrics().density;
         float width = context.getResources().getDisplayMetrics().widthPixels;
         return width / (scale <= 0 ? 1 : scale) + 0.5f;
+    }
+
+    public static Point getScreenInfo(Activity context){
+        Point screenSize = new Point();
+        context.getWindowManager().getDefaultDisplay().getSize(screenSize);
+        return screenSize;
     }
 
     //全面屏、刘海屏适配

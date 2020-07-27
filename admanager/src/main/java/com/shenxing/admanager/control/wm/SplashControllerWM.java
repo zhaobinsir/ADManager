@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by zhaobinsir
  * on 2020/7/27.
+ * 开屏广告
  */
 public class SplashControllerWM {
 
@@ -131,10 +132,12 @@ public class SplashControllerWM {
                            Integer height,
                            Class<Activity> tagClass,
                            TTAdNative.SplashAdListener listener) {
-        weakReference = new WeakReference<>(context);
-        this.container = container;
-        this.tagClass = tagClass;
-        mTTAdNative = TTAdSdk.getAdManager().createAdNative(context);
+        if (weakReference==null||mTTAdNative==null) {
+            weakReference = new WeakReference<>(context);
+            this.container = container;
+            this.tagClass = tagClass;
+            mTTAdNative = TTAdSdk.getAdManager().createAdNative(context);
+        }
         if (mIsExpress) {
             //个性化模板广告需要传入期望广告view的宽、高，单位dp，请传入实际需要的大小，
             //比如：广告下方拼接logo、适配刘海屏等，需要考虑实际广告大小

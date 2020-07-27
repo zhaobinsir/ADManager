@@ -9,7 +9,10 @@ import com.shenxing.admanager.control.gdt.NativeUnifiedController;
 import com.shenxing.admanager.control.gdt.RewardVideoController;
 import com.shenxing.admanager.control.gdt.SplashADController;
 import com.shenxing.admanager.control.wm.BannerControllerWM;
+import com.shenxing.admanager.control.wm.FullScreenControllerWM;
+import com.shenxing.admanager.control.wm.InteractControllerWM;
 import com.shenxing.admanager.control.wm.NativeControllerWm;
+import com.shenxing.admanager.control.wm.RewardControllerWM;
 import com.shenxing.admanager.control.wm.SplashControllerWM;
 
 /**
@@ -72,6 +75,15 @@ public class ADManager {
                     break;
                 case ADType.BANNER_WMAD:
                     adObject = (T) new BannerControllerWM();
+                    break;
+                case ADType.UNINTER_WMAD:
+                    adObject = (T) new InteractControllerWM();
+                    break;
+                case ADType.REWARD_WMAD:
+                    adObject = (T) new RewardControllerWM();
+                    break;
+                case ADType.FULLSCREEN_WMAD:
+                    adObject = (T) new FullScreenControllerWM();
                     break;
                 default:
                     break;
