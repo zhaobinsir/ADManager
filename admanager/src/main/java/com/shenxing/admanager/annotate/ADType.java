@@ -23,7 +23,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.SOURCE)
 @Target(value = {TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, ANNOTATION_TYPE, PACKAGE})
 @StringDef({ADType.SPLASH_AD, ADType.BANNER2_AD, ADType.UNINTER2_AD, ADType.NATIVE_AD, ADType.NATIVE2_AD, ADType.NATIVEUN_AD, ADType.REWARD_AD, ADType.H5_AD
-        , ADType.SPLASH_WMAD, ADType.BANNER_WMAD, ADType.UNINTER_WMAD, ADType.NATIVE_WMAD, ADType.REWARD_WMAD, ADType.FULLSCREEN_WMAD, ADType.Draw_WMAD})
+        , ADType.SPLASH_WMAD, ADType.BANNER_WMAD, ADType.UNINTER_WMAD, ADType.NATIVE_WMAD, ADType.REWARD_WMAD, ADType.FULLSCREEN_WMAD, ADType.Draw_WMAD, ADType.EXPRESS_DRAW})
 public @interface ADType {
 
     /**
@@ -89,10 +89,19 @@ public @interface ADType {
      */
     String REWARD_WMAD = "RewardVideoADWM";
 
-    //全屏视频（TTFullScreenVideoAd）
+    /**
+     * 全屏视频（TTFullScreenVideoAd）
+     */
     String FULLSCREEN_WMAD = "FullScreenVideoAdWM";
 
-    //    Draw 信息流 个性化模板Draw信息流
+    /**
+     * Draw 信息流 个性化模板Draw信息流
+     */
     String Draw_WMAD = "TTDrawFeedAdWM";
+
+    /**
+     * 个性化模板Draw信息流
+     */
+    String EXPRESS_DRAW = "expressdraw";
 
 }
