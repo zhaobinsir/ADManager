@@ -3,6 +3,7 @@ package com.example.moduletest;
 /**
  * demo工程的广告位id
  * Created by chaotao on 2019-06-20 .
+ * 看清楚 这是广点通id
  **/
 public class PositionId {
   public static final String BANNER_POS_ID = "9079537218417626401";

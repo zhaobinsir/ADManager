@@ -280,7 +280,7 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
     public void onNoAD(AdError adError) {
         reset();
         if (loadMoreListener != null) {
-            loadMoreListener.onNoAd(adList);//存在之前加载成功的数据，的可能性
+            loadMoreListener.onLoadError(adList);//存在之前加载成功的数据，的可能性
             adList.clear();
         }
     }

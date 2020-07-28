@@ -145,7 +145,7 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
     public void onNoAD(AdError adError) {
         reset();
         if (listener != null) {
-            listener.onNoAd(adList);//存在之前加载成功的数据，的可能性
+            listener.onLoadError(adList);//存在之前加载成功的数据，的可能性
         }
     }
 

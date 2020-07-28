@@ -3,7 +3,6 @@ package com.shenxing.admanager.control.wm;
 import android.app.Activity;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.IntRange;
@@ -12,15 +11,17 @@ import androidx.annotation.NonNull;
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.FilterWord;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
+import com.shenxing.admanager.bean.BindDisLike;
+import com.shenxing.admanager.bean.BindDownload;
+import com.shenxing.admanager.bean.BindExpressInteract;
 import com.shenxing.admanager.utils.DislikeDialog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,15 +35,14 @@ public class BannerControllerWM {
     public static final String TAG = "BannerControllerWM";
 
     private TTAdNative mTTAdNative;
-    private TTNativeExpressAd mTTAd;
-    private TTAdDislike mTTAdDislike;
     private AdSlot adSlot;
     WeakReference<Activity> weakReference;
+    private List<TTNativeExpressAd> uselessData=new ArrayList();//无用广告资源
 
     private int intervalTime = -1;//设置轮播时间
 
-    public Integer width;
-    public Integer height;
+    public Float width;
+    public Float height;
     private int bannerNum=-1;//暂时最多仅支持3条
 
     /**
@@ -127,81 +127,30 @@ public class BannerControllerWM {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
+                Log.d(TAG, "onNativeExpressAdLoad: ");
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
-                container.removeAllViews();
-                mTTAd = ads.get(0);
+                TTNativeExpressAd mTTAd = ads.get(0);
                 if (intervalTime != -1) {
                     mTTAd.setSlideIntervalTime(Math.max(intervalTime, 30 * 1000));
                 }
                 bindAdListener(mTTAd, container);
                 mTTAd.render();
+                uselessData.add(mTTAd);
             }
         });
     }
 
     //公开此方法
     public void bindAdListener(@NonNull TTNativeExpressAd ad, @NonNull final ViewGroup container) {
-        ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
-            @Override
-            public void onAdClicked(View view, int type) {
-
-            }
-
-            @Override
-            public void onAdShow(View view, int type) {
-
-            }
-
-            @Override
-            public void onRenderFail(View view, String msg, int code) {
-            }
-
-            @Override
-            public void onRenderSuccess(View view, float width, float height) {
-                Log.e("ExpressView", "render suc:");
-                //返回view的宽高 单位 dp
-                container.removeAllViews();
-                container.addView(view);
-            }
-        });
+        ad.setExpressInteractionListener(new BindExpressInteract(new WeakReference<>(container)));
         //dislike设置
         bindDislike(ad, false, container);
         if (ad.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             return;
         }
-        ad.setDownloadListener(new TTAppDownloadListener() {
-            @Override
-            public void onIdle() {//开始下载
-
-            }
-
-            @Override
-            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-
-            }
-
-            @Override
-            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-
-            }
-
-            @Override
-            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-
-            }
-
-            @Override
-            public void onInstalled(String fileName, String appName) {
-
-            }
-
-            @Override
-            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-
-            }
-        });
+        ad.setDownloadListener(new BindDownload());
     }
 
     /**
@@ -231,23 +180,7 @@ public class BannerControllerWM {
             return;
         }
         //使用默认模板中默认dislike弹出样式
-        ad.setDislikeCallback(weakReference.get(), new TTAdDislike.DislikeInteractionCallback() {
-            @Override
-            public void onSelected(int position, String value) {
-                //用户选择不喜欢原因后，移除广告展示
-                container.removeAllViews();
-            }
-
-            @Override
-            public void onCancel() {
-            }
-
-            @Override
-            public void onRefuse() {
-
-            }
-
-        });
+        ad.setDislikeCallback(weakReference.get(),new BindDisLike(new WeakReference<>(container)));
     }
 
 
@@ -258,8 +191,14 @@ public class BannerControllerWM {
         if (weakReference != null) {
             weakReference.clear();
         }
-        if (mTTAd != null) {
-            mTTAd.destroy();
+        try {
+            for (TTNativeExpressAd nativeExpressAd : uselessData) {
+                nativeExpressAd.destroy();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            uselessData.clear();
         }
     }
 

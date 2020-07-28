@@ -12,6 +12,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        flavorDimensions "versionCode"
     }
 
     buildTypes {
@@ -21,7 +23,21 @@ android {
         }
     }
 
-
+    productFlavors{
+        brancha{//广点通测试
+            applicationId "com.qq.e.union.demo"
+            versionCode 1
+            versionName "1.0"
+        }
+        branchb{//网盟测试
+            applicationId "com.union_test.toutiao"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
+    productFlavors.all { variant ->
+//        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
 }
 
 repositories {

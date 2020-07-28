@@ -11,6 +11,6 @@ public interface NativeLoadMoreListener<T> {
 
    void onAdLoad(List<T> list);
 
-   void onNoAd(List<T> list);
+   void onLoadError(List<T> list);
 
 }

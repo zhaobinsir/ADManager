@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onNoAd(List<NativeExpressADView> list) {
+                public void onLoadError(List<NativeExpressADView> list) {
                     Log.e(TAG, "onNoAd: " + list.size());
                 }
             });
