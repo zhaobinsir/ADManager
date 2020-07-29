@@ -51,33 +51,33 @@ public class Main2Activity extends AppCompatActivity {
        /* interWm.loadExpressAd(this, WMID.interId1, new InteractListener<TTNativeExpressAd>() {
             @Override
             public void onAdDismiss() {
-                Log.d(TAG, "onAdDismiss: ");
+                ILog.d(TAG, "onAdDismiss: ");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                Log.d(TAG, "onAdShow: ");
+                ILog.d(TAG, "onAdShow: ");
             }
 
             @Override
             public void onLoadError(int errorCode, String extraCode) {
-                Log.d(TAG, "onLoadError: "+extraCode+":"+extraCode);
+                ILog.d(TAG, "onLoadError: "+extraCode+":"+extraCode);
             }
 
             @Override
             public void onAdLoad(TTNativeExpressAd ttNativeExpressAd) {//无需调用show
-                Log.d(TAG, "onAdLoad: ");
+                ILog.d(TAG, "onAdLoad: ");
             }
 
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
-                Log.d(TAG, "onRenderFail: ");
+                ILog.d(TAG, "onRenderFail: ");
             }
 
             @Override
             public void onRenderSuccess(View view, float width, float height) {//展示广告
-                Log.d(TAG, "onRenderSuccess: ");
+                ILog.d(TAG, "onRenderSuccess: ");
             }
         });*/
 
@@ -87,12 +87,12 @@ public class Main2Activity extends AppCompatActivity {
      /*   interWm.loadExpressAd(this, WMID.interId1,3, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String error) {
-                Log.d(TAG, "onLoadError: "+code+":"+error);
+                ILog.d(TAG, "onLoadError: "+code+":"+error);
             }
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: "+ads.size());
+                ILog.d(TAG, "onNativeExpressAdLoad: "+ads.size());
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
@@ -140,32 +140,32 @@ public class Main2Activity extends AppCompatActivity {
        /* expresswm.loadAndShowExpressAd(this, WMID.express_draw, mDrawNative, new ExpressDrawSimpleListener() {
             @Override
             public void onLoadError(int errorCode, String extraCode) {
-                Log.d(TAG, "onLoadError: "+errorCode+":"+extraCode);
+                ILog.d(TAG, "onLoadError: "+errorCode+":"+extraCode);
             }
 
             @Override
             public void onVideoError(int errorCode, int extraCode) {
-                Log.d(TAG, "onVideoError: "+errorCode+":"+errorCode);
+                ILog.d(TAG, "onVideoError: "+errorCode+":"+errorCode);
             }
 
             @Override
             public void onVideoAdComplete() {
-                Log.d(TAG, "onVideoAdComplete: ");
+                ILog.d(TAG, "onVideoAdComplete: ");
             }
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
-                Log.d(TAG, "onRenderFail: ");
+                ILog.d(TAG, "onRenderFail: ");
             }
 
             @Override
             public void onRenderSuccess(View view, float width, float height) {
-                Log.d(TAG, "onRenderSuccess: ");
+                ILog.d(TAG, "onRenderSuccess: ");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                Log.d(TAG, "onAdShow: ");
+                ILog.d(TAG, "onAdShow: ");
             }
         });*/
         /**
@@ -226,12 +226,12 @@ public class Main2Activity extends AppCompatActivity {
         /*drawWm.loadAndShowDrawAd(this, WMID.draw, mDrawNative, new DrawNativeSimpleListener() {
             @Override
             public void onError(int code, String error) {
-                Log.d(TAG, "onError: "+code+":"+error);
+                ILog.d(TAG, "onError: "+code+":"+error);
             }
 
             @Override
             public void onDrawFeedAdLoad(List<TTDrawFeedAd> list) {
-                Log.d(TAG, "onDrawFeedAdLoad: "+list.size());
+                ILog.d(TAG, "onDrawFeedAdLoad: "+list.size());
             }
         });*/
         /**
@@ -240,12 +240,12 @@ public class Main2Activity extends AppCompatActivity {
        /* drawWm.loadDrawAd(this, WMID.draw, 3, new DrawNativeSimpleListener() {
             @Override
             public void onError(int code, String error) {
-                Log.d(TAG, "onError: "+code+":"+error);
+                ILog.d(TAG, "onError: "+code+":"+error);
             }
 
             @Override
             public void onDrawFeedAdLoad(List<TTDrawFeedAd> ads) {
-                Log.d(TAG, "onDrawFeedAdLoad: "+ads.size());
+                ILog.d(TAG, "onDrawFeedAdLoad: "+ads.size());
                 mContainer.removeAllViews();
                 mContainer.addView(ads.get(0).getAdView());
                 drawWm.bindAdViewAndAction(ads.get(0),mContainer);
@@ -268,12 +268,12 @@ public class Main2Activity extends AppCompatActivity {
                     ad.setDrawVideoListener(new TTDrawFeedAd.DrawVideoListener() {
                         @Override
                         public void onClickRetry() {//点击重试按钮
-                            Log.d("drawss", "onClickRetry!");
+                            ILog.d("drawss", "onClickRetry!");
                         }
 
                         @Override
                         public void onClick() {//点击查看详情或下载按钮
-                            Log.d("drawss", "onClick download or view detail page ! !");
+                            ILog.d("drawss", "onClick download or view detail page ! !");
                         }
                     });
                     ad.setCanInterruptVideoPlay(true);//点击视频是否暂停
@@ -297,28 +297,28 @@ public class Main2Activity extends AppCompatActivity {
                 TTAdConstant.VERTICAL, new FullScreenSimpleListener<TTFullScreenVideoAd,String>() {
             @Override
             public void onAdLoad(TTFullScreenVideoAd ttFullScreenVideoAd) {
-                Log.d(TAG, "onAdLoad: ");
+                ILog.d(TAG, "onAdLoad: ");
             }
 
             @Override
             public void onAdError(String error) {
-                Log.d(TAG, "onAdError: "+error);
+                ILog.d(TAG, "onAdError: "+error);
             }
             
 
             @Override
             public void onAdClose() {
-                Log.d(TAG, "onAdClose: ");
+                ILog.d(TAG, "onAdClose: ");
             }
 
             @Override
             public void onVideoComplete() {
-                Log.d(TAG, "onVideoComplete: ");
+                ILog.d(TAG, "onVideoComplete: ");
             }
 
             @Override
             public void onSkippedVideo() {
-                Log.d(TAG, "onSkippedVideo: ");
+                ILog.d(TAG, "onSkippedVideo: ");
             }
         });*/
 
@@ -328,7 +328,7 @@ public class Main2Activity extends AppCompatActivity {
         /*fullScreenWM.preFullScreenAd(this, WMID.fullIdv, TTAdConstant.VERTICAL,new FullScreenSimpleListener<TTFullScreenVideoAd,String>() {
             @Override
             public void onAdLoad(TTFullScreenVideoAd ttFullScreenVideoAd) {
-                Log.d(TAG, "onAdLoad: ");
+                ILog.d(TAG, "onAdLoad: ");
 //                ttFullScreenVideoAd.showFullScreenVideoAd(Main2Activity.this);
 //                fullScreenWM.showAd();
                 fullScreenWM.showAd(TTAdConstant.RitScenes.HOME_GET_BONUS,"Just write something");
@@ -336,22 +336,22 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void onAdError(String error) {
-                Log.d(TAG, "onAdError: ");
+                ILog.d(TAG, "onAdError: ");
             }
 
             @Override
             public void onAdClose() {
-                Log.d(TAG, "onAdClose: ");
+                ILog.d(TAG, "onAdClose: ");
             }
 
             @Override
             public void onVideoComplete() {
-                Log.d(TAG, "onVideoComplete: ");
+                ILog.d(TAG, "onVideoComplete: ");
             }
 
             @Override
             public void onSkippedVideo() {
-                Log.d(TAG, "onSkippedVideo: ");
+                ILog.d(TAG, "onSkippedVideo: ");
             }
         });*/
        //以下省略展示...
@@ -367,7 +367,7 @@ public class Main2Activity extends AppCompatActivity {
         /*rewardwm.preRewardVideo(this, WMID.rewardIdv, new RewardSimpleListener<TTRewardVideoAd,String>() {
             @Override
             public void onAdLoad(TTRewardVideoAd ttRewardVideoAd) {//广告加载成功
-                Log.d(TAG, "onAdLoad: ");
+                ILog.d(TAG, "onAdLoad: ");
 //                ttRewardVideoAd.showRewardVideoAd(Main2Activity.this);
                 rewardwm.showAd();
 //                rewardwm.showAd(TTAdConstant.RitScenes.CUSTOMIZE_SCENES,"Test");
@@ -375,30 +375,30 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void onAdError(String error) {//广告加载错误
-                Log.d(TAG, "onAdError: "+error);
+                ILog.d(TAG, "onAdError: "+error);
             }
 
             //激励播放完成，奖励回调
             @Override
             public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
-                String logString = "verify:" + rewardVerify + " amount:" + rewardAmount +
+                String ILogString = "verify:" + rewardVerify + " amount:" + rewardAmount +
                         " name:" + rewardName;
-                Log.e(TAG, "Callback --> " + logString);
+                ILog.e(TAG, "Callback --> " + ILogString);
             }
 
             @Override
             public void onAdClose() {//用户手动关闭广告
-                Log.d(TAG, "onAdClose: ");
+                ILog.d(TAG, "onAdClose: ");
             }
 
             @Override
             public void onVideoComplete() {//视频播放完成
-                Log.d(TAG, "onVideoComplete: ");
+                ILog.d(TAG, "onVideoComplete: ");
             }
 
             @Override
             public void onSkippedVideo() {//跳过广告
-                Log.d(TAG, "onSkippedVideo: ");
+                ILog.d(TAG, "onSkippedVideo: ");
             }
         }, TTAdConstant.VERTICAL);*/
         
@@ -414,34 +414,34 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onAdLoad(TTRewardVideoAd ttRewardVideoAd) {
                 //此处不要再写展示了
-                Log.d(TAG, "onAdLoad: ");
+                ILog.d(TAG, "onAdLoad: ");
             }
 
             @Override
             public void onAdError(String s) {
-                Log.d(TAG, "onAdError: ");
+                ILog.d(TAG, "onAdError: ");
             }
 
             @Override
             public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
-                String logString = "verify:" + rewardVerify + " amount:" + rewardAmount +
+                String ILogString = "verify:" + rewardVerify + " amount:" + rewardAmount +
                         " name:" + rewardName;
-                Log.e(TAG, "Callback --> " + logString);
+                ILog.e(TAG, "Callback --> " + ILogString);
             }
 
             @Override
             public void onAdClose() {
-                Log.d(TAG, "onAdClose: ");
+                ILog.d(TAG, "onAdClose: ");
             }
 
             @Override
             public void onVideoComplete() {
-                Log.d(TAG, "onVideoComplete: ");
+                ILog.d(TAG, "onVideoComplete: ");
             }
 
             @Override
             public void onSkippedVideo() {
-                Log.d(TAG, "onSkippedVideo: ");
+                ILog.d(TAG, "onSkippedVideo: ");
             }
         });*/
     }
@@ -511,12 +511,12 @@ public class Main2Activity extends AppCompatActivity {
         /*bannerwm.loadBanner(this, WMID.bannerId1, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d(TAG, "onError: ");
+                ILog.d(TAG, "onError: ");
             }
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: ");
+                ILog.d(TAG, "onNativeExpressAdLoad: ");
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
@@ -532,12 +532,12 @@ public class Main2Activity extends AppCompatActivity {
       /*  bannerwm.loadBannerMore(this, WMID.bannerId6, 2, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d(TAG, "onError: ");
+                ILog.d(TAG, "onError: ");
             }
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: "+ads.size());
+                ILog.d(TAG, "onNativeExpressAdLoad: "+ads.size());
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
@@ -559,12 +559,12 @@ public class Main2Activity extends AppCompatActivity {
       /*  nativeWm.preNative(this, WMID.nativeId, 1,  new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d(TAG, "onError: "+i+"...."+s);
+                ILog.d(TAG, "onError: "+i+"...."+s);
             }
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> list) {
-                Log.e(TAG, "onNativeExpressAdLoad: "+list.size());
+                ILog.e(TAG, "onNativeExpressAdLoad: "+list.size());
                 if (list == null || list.size() == 0){
                     return;
                 }
@@ -587,7 +587,7 @@ public class Main2Activity extends AppCompatActivity {
         /*nativeWm.preNativeMore(this, WMID.nativeId, 50, new NativeLoadMoreListener<TTNativeExpressAd>() {
             @Override
             public void onAdLoad(List<TTNativeExpressAd> list) {//根据自己需求改
-                Log.e(TAG, "onNativeExpressAdLoad: "+list.size());
+                ILog.e(TAG, "onNativeExpressAdLoad: "+list.size());
                 if (list == null || list.size() == 0){
                     return;
                 }
@@ -598,7 +598,7 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void onLoadError(List<TTNativeExpressAd> list) {
-                Log.e(TAG, "onNativeExpressAdLoad: " + list.size());
+                ILog.e(TAG, "onNativeExpressAdLoad: " + list.size());
             }
         });*/
     }

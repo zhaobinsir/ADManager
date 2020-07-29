@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -12,6 +11,7 @@ import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.doc.GDTDocument;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 
@@ -89,29 +89,29 @@ public class SplashADController {
         return new SplashADListener() {
             @Override
             public void onADDismissed() {
-                Log.d(TAG, "onADDismissed: ");
+                ILog.d(TAG, "onADDismissed: ");
                 goToMainActivity();
             }
 
             @Override
             public void onNoAD(AdError adError) {
-                Log.d(TAG, "onNoAD: "+adError.getErrorMsg());
+                ILog.d(TAG, "onNoAD: "+adError.getErrorMsg());
                 goToMainActivity();
             }
 
             @Override
             public void onADPresent() {
-                Log.d(TAG, "onADPresent: ");
+                ILog.d(TAG, "onADPresent: ");
             }
 
             @Override
             public void onADClicked() {
-                Log.d(TAG, "onADClicked: ");
+                ILog.d(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADTick(long millisUntilFinished) {
-                Log.d(TAG, "onADTick: ");
+                ILog.d(TAG, "onADTick: ");
                 if (skipTv != null) {
                     skipTv.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000f)));
                 }
@@ -119,12 +119,12 @@ public class SplashADController {
 
             @Override
             public void onADExposure() {
-                Log.d(TAG, "onADExposure: ");
+                ILog.d(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADLoaded(long l) {
-                Log.d(TAG, "onADLoaded: ");
+                ILog.d(TAG, "onADLoaded: ");
             }
         };
     }
@@ -136,7 +136,7 @@ public class SplashADController {
                 needFinish();
                 return;
             }
-            else Log.e(TAG, "not set intent, can't new task");
+            else ILog.e(TAG, "not set intent, can't new task");
         } catch (Exception e) {
             e.printStackTrace();
         }

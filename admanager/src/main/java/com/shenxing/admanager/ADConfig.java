@@ -10,6 +10,7 @@ import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.qq.e.ads.cfg.MultiProcessFlag;
 import com.qq.e.comm.managers.GDTADManager;
 import com.qq.e.comm.managers.setting.GlobalSetting;
+import com.shenxing.admanager.utils.ILog;
 
 /**
  * Created by zhaobinsir
@@ -64,9 +65,13 @@ public class ADConfig {
 
     /**
      * 广点通
-     * @param ismulti 是否支持多进程
+     *  是否支持多进程
      */
    /* public static void setGDTMultiProcess(boolean ismulti){
         MultiProcessFlag.setMultiProcess(ismulti);
     }*/
+
+   public static void openDebug(boolean open){
+       ILog.DEBUG=open;
+   }
 }

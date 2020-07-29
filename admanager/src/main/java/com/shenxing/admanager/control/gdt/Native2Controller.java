@@ -1,7 +1,6 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -11,6 +10,7 @@ import com.qq.e.ads.nativ.express2.NativeExpressADData2;
 import com.qq.e.ads.nativ.express2.VideoOption2;
 import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.callback.NativeLoadMoreListener;
+import com.shenxing.admanager.utils.ILog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
      */
     public synchronized void loadNative2AdMore(@NonNull Activity context, @NonNull String posid, @IntRange(from = 11,to = 100) int adcount,@NonNull int width,@NonNull int height, NativeLoadMoreListener listener){
         if (loadMoreAd==true) {
-            Log.d(TAG, "loadNativeAdMore: not load over,please wait...");
+            ILog.d(TAG, "loadNativeAdMore: not load over,please wait...");
             return;
         }
         loadMoreAd=true;
@@ -127,7 +127,7 @@ public class Native2Controller implements NativeExpressAD2.AdLoadListener{
     @Override
     public void onLoadSuccess(List<NativeExpressADData2> list) {
         if (interrupt) {
-            Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+            ILog.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
             return;
         }
         adList.addAll(list);

@@ -1,7 +1,6 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +14,7 @@ import com.qq.e.ads.nativ.NativeExpressADView;
 import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.callback.NativeLoadMoreListener;
 import com.shenxing.admanager.callback.NativeStatusAdListener;
+import com.shenxing.admanager.utils.ILog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class NativeController {
             @Override
             public void onADLoaded(List<NativeExpressADView> list) {
                 if (list.size()==0) {
-                    Log.e(TAG, "onADLoaded: List<NativeExpressADView> list size 0");
+                    ILog.e(TAG, "onADLoaded: List<NativeExpressADView> list size 0");
                     return;
                 }
                 if (container.getVisibility() != View.VISIBLE) {
@@ -148,7 +148,7 @@ public class NativeController {
      */
     public synchronized void loadNativeAdMore(@NonNull Activity context,@NonNull String posid, @IntRange(from = 11,to = 100) int adcount,@NonNull NativeLoadMoreListener listener){
         if (loadMoreAd==true) {
-            Log.d(TAG, "loadNativeAdMore: not load over,please wait");
+            ILog.d(TAG, "loadNativeAdMore: not load over,please wait");
             return;
         }
         loadMoreAd=true;
@@ -215,9 +215,9 @@ public class NativeController {
         return new NativeStatusAdListener() {
             @Override
             public void onADLoaded(List<NativeExpressADView> list) {
-                Log.d(TAG, "onADLoaded: ");
+                ILog.d(TAG, "onADLoaded: ");
                 if (interrupt) {
-                    Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+                    ILog.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
                     return;
                 }
                 adList.addAll(list);
@@ -234,42 +234,42 @@ public class NativeController {
 
             @Override
             public void onRenderFail(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onRenderFail: ");
+                ILog.d(TAG, "onRenderFail: ");
             }
 
             @Override
             public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onRenderSuccess: ");
+                ILog.d(TAG, "onRenderSuccess: ");
             }
 
             @Override
             public void onADExposure(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADExposure: ");
+                ILog.d(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADClicked(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADClicked: ");
+                ILog.d(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADClosed(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADClosed: ");
+                ILog.d(TAG, "onADClosed: ");
             }
 
             @Override
             public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADLeftApplication: ");
+                ILog.d(TAG, "onADLeftApplication: ");
             }
 
             @Override
             public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADOpenOverlay: ");
+                ILog.d(TAG, "onADOpenOverlay: ");
             }
 
             @Override
             public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
-                Log.d(TAG, "onADCloseOverlay: ");
+                ILog.d(TAG, "onADCloseOverlay: ");
             }
 
             @Override

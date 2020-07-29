@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.IntRange;
@@ -19,6 +18,7 @@ import com.shenxing.admanager.bean.BindDownload;
 import com.shenxing.admanager.bean.BindExpressInteract;
 import com.shenxing.admanager.callback.NativeLoadMoreListener;
 import com.shenxing.admanager.utils.DislikeDialog;
+import com.shenxing.admanager.utils.ILog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -85,7 +85,7 @@ public class NativeControllerWm  {
                               @IntRange(from = 4,to = 100) int adcount,
                               @NonNull NativeLoadMoreListener listener){
         if (loadMoreAd==true) {
-            Log.d(TAG, "loadNativeAdMore: not load over,please wait");
+            ILog.d(TAG, "loadNativeAdMore: not load over,please wait");
             return;
         }
         loadMoreAd=true;
@@ -185,8 +185,8 @@ public class NativeControllerWm  {
                 return;
             }
 
-            final DislikeDialog dislikeDialog = new DislikeDialog(weakReference.get(), words);
-            dislikeDialog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
+            final DislikeDialog dislikeDiaILog = new DislikeDialog(weakReference.get(), words);
+            dislikeDiaILog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
                 @Override
                 public void onItemClick(FilterWord filterWord) {
                     //屏蔽广告
@@ -194,7 +194,7 @@ public class NativeControllerWm  {
                     container.removeAllViews();
                 }
             });
-            ad.setDislikeDialog(dislikeDialog);
+            ad.setDislikeDialog(dislikeDiaILog);
             return;
         }
         //使用默认个性化模板中默认dislike弹出样式
@@ -269,11 +269,11 @@ public class NativeControllerWm  {
         @Override
         public void onNativeExpressAdLoad(List<TTNativeExpressAd> list) {
             if (interrupt) {
-                Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+                ILog.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
                 return;
             }
             adList.addAll(list);
-            Log.d(TAG, "onNativeExpressAdLoad: "+adCount);
+            ILog.d(TAG, "onNativeExpressAdLoad: "+adCount);
             if (adCount>0) {
                 onRqCount();
             }else {//回调

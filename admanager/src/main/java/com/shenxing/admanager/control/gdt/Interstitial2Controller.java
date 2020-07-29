@@ -1,12 +1,12 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
 import com.qq.e.comm.util.AdError;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 
@@ -153,7 +153,7 @@ public class Interstitial2Controller  {
         return new UnifiedInterstitialADListener() {
             @Override
             public void onADReceive() {
-                Log.d(TAG, "onADReceive: ");
+                ILog.d(TAG, "onADReceive: ");
                 if (isFullAd) {
                     if (weakReference != null) {
                         showFullScreenAD(weakReference.get());
@@ -165,37 +165,37 @@ public class Interstitial2Controller  {
 
             @Override
             public void onVideoCached() {
-                Log.d(TAG, "onVideoCached: ");
+                ILog.d(TAG, "onVideoCached: ");
             }
 
             @Override
             public void onNoAD(AdError adError) {
-                Log.d(TAG, "onNoAD: ");
+                ILog.d(TAG, "onNoAD: ");
             }
 
             @Override
             public void onADOpened() {
-                Log.d(TAG, "onADOpened: ");
+                ILog.d(TAG, "onADOpened: ");
             }
 
             @Override
             public void onADExposure() {
-                Log.d(TAG, "onADExposure: ");
+                ILog.d(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADClicked() {
-                Log.d(TAG, "onADClicked: ");
+                ILog.d(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADLeftApplication() {
-                Log.d(TAG, "onADLeftApplication: ");
+                ILog.d(TAG, "onADLeftApplication: ");
             }
 
             @Override
             public void onADClosed() {
-                Log.d(TAG, "onADClosed: ");
+                ILog.d(TAG, "onADClosed: ");
             }
         };
     }

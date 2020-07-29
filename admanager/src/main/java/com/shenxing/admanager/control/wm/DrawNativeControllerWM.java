@@ -3,7 +3,6 @@ package com.shenxing.admanager.control.wm;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import com.bytedance.sdk.openadsdk.TTDrawFeedAd;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.shenxing.admanager.R;
 import com.shenxing.admanager.callback.DrawNativeSimpleListener;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class DrawNativeControllerWM {
         mTTAdNative.loadDrawFeedAd(adSlot, new TTAdNative.DrawFeedAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.d(TAG, message);
+                ILog.d(TAG, message);
                 reSetAdNum();
                 if (simpleListener != null) {
                     simpleListener.onError(code,message);
@@ -143,12 +143,12 @@ public class DrawNativeControllerWM {
                     ad.setDrawVideoListener(new TTDrawFeedAd.DrawVideoListener() {
                         @Override
                         public void onClickRetry() {//点击重试按钮
-                            Log.d("drawss", "onClickRetry!");
+                            ILog.d("drawss", "onClickRetry!");
                         }
 
                         @Override
                         public void onClick() {//点击查看详情或下载按钮
-                            Log.d("drawss", "onClick download or view detail page ! !");
+                            ILog.d("drawss", "onClick download or view detail page ! !");
                         }
                     });
                     ad.setCanInterruptVideoPlay(true);
@@ -205,17 +205,17 @@ public class DrawNativeControllerWM {
         ad.registerViewForInteraction(mAdContainer, clickViews, creativeViews, new TTNativeAd.AdInteractionListener() {
             @Override
             public void onAdClicked(View view, TTNativeAd ad) {
-                Log.d(TAG, "onAdClicked: ");
+                ILog.d(TAG, "onAdClicked: ");
             }
 
             @Override
             public void onAdCreativeClick(View view, TTNativeAd ad) {
-                Log.d(TAG, "onAdCreativeClick: ");
+                ILog.d(TAG, "onAdCreativeClick: ");
             }
 
             @Override
             public void onAdShow(TTNativeAd ad) {
-                Log.d(TAG, "bind onAdShow: ");
+                ILog.d(TAG, "bind onAdShow: ");
             }
         });
     }

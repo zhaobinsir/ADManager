@@ -1,7 +1,6 @@
 package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -13,6 +12,7 @@ import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.shenxing.admanager.callback.FullScreenSimpleListener;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 
@@ -138,7 +138,7 @@ public class FullScreenControllerWM {
         mTTAdNative.loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.e(TAG, "Callback --> onError: " + code + ", " + String.valueOf(message));
+                ILog.e(TAG, "Callback --> onError: " + code + ", " + String.valueOf(message));
                 if (simpleListener != null) {
                     simpleListener.onAdError(code+":"+message);
                 }
@@ -146,7 +146,7 @@ public class FullScreenControllerWM {
 
             @Override
             public void onFullScreenVideoAdLoad(TTFullScreenVideoAd ad) {
-                Log.e(TAG, "Callback --> onFullScreenVideoAdLoad");
+                ILog.e(TAG, "Callback --> onFullScreenVideoAdLoad");
                 mttFullVideoAd = ad;
                 isLoaded = false;
                 //设置广告互动
@@ -154,17 +154,17 @@ public class FullScreenControllerWM {
 
                     @Override
                     public void onAdShow() {
-                        Log.d(TAG, "Callback --> FullVideoAd show");
+                        ILog.d(TAG, "Callback --> FullVideoAd show");
                     }
 
                     @Override
                     public void onAdVideoBarClick() {
-                        Log.d(TAG, "Callback --> FullVideoAd bar click");
+                        ILog.d(TAG, "Callback --> FullVideoAd bar click");
                     }
 
                     @Override
                     public void onAdClose() {
-                        Log.d(TAG, "Callback --> FullVideoAd close");
+                        ILog.d(TAG, "Callback --> FullVideoAd close");
                         if (simpleListener != null) {
                             simpleListener.onAdClose();
                         }
@@ -172,7 +172,7 @@ public class FullScreenControllerWM {
 
                     @Override
                     public void onVideoComplete() {
-                        Log.d(TAG, "Callback --> FullVideoAd complete");
+                        ILog.d(TAG, "Callback --> FullVideoAd complete");
                         if (simpleListener != null) {
                             simpleListener.onVideoComplete();
                         }
@@ -180,7 +180,7 @@ public class FullScreenControllerWM {
 
                     @Override
                     public void onSkippedVideo() {
-                        Log.d(TAG, "Callback --> FullVideoAd skipped");
+                        ILog.d(TAG, "Callback --> FullVideoAd skipped");
                         if (simpleListener != null) {
                             simpleListener.onSkippedVideo();
                         }
@@ -196,41 +196,41 @@ public class FullScreenControllerWM {
 
                     @Override
                     public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadActive==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
+                        ILog.d("DML", "onDownloadActive==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
                     }
 
                     @Override
                     public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadPaused===totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
+                        ILog.d("DML", "onDownloadPaused===totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
                     }
 
                     @Override
                     public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadFailed==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
+                        ILog.d("DML", "onDownloadFailed==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
                     }
 
                     @Override
                     public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadFinished==totalBytes=" + totalBytes + ",fileName=" + fileName + ",appName=" + appName);
+                        ILog.d("DML", "onDownloadFinished==totalBytes=" + totalBytes + ",fileName=" + fileName + ",appName=" + appName);
                     }
 
                     @Override
                     public void onInstalled(String fileName, String appName) {
-                        Log.d("DML", "onInstalled==" + ",fileName=" + fileName + ",appName=" + appName);
+                        ILog.d("DML", "onInstalled==" + ",fileName=" + fileName + ",appName=" + appName);
                     }
                 });
             }
 
             @Override
             public void onFullScreenVideoCached() {
-                Log.e(TAG, "Callback --> onFullScreenVideoCached");
+                ILog.e(TAG, "Callback --> onFullScreenVideoCached");
                 isLoaded=true;
                 if (simpleListener != null) {
                     simpleListener.onAdLoad(mttFullVideoAd);
                 }
                 if (needShow) {
                     showAd();
-                }else Log.d(TAG, "onFullScreenVideoCached: needshow false inhibit show");
+                }else ILog.d(TAG, "onFullScreenVideoCached: needshow false inhibit show");
             }
         });
     }

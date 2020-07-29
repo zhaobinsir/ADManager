@@ -1,8 +1,8 @@
 package com.shenxing.admanager.bean;
 
-import android.util.Log;
 
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
+import com.shenxing.admanager.utils.ILog;
 
 /**
  * Created by zhaobinsir
@@ -15,31 +15,31 @@ public class BindDownload implements TTAppDownloadListener {
 
     @Override
     public void onIdle() {
-        Log.d(TAG, "onIdle: ");
+        ILog.d(TAG, "onIdle: ");
     }
 
     @Override
     public void onDownloadActive(long l, long l1, String s, String s1) {
-        Log.d(TAG, "onDownloadActive: ");
+        ILog.d(TAG, "onDownloadActive: ");
     }
 
     @Override
     public void onDownloadPaused(long l, long l1, String s, String s1) {
-        Log.d(TAG, "onDownloadPaused: ");
+        ILog.d(TAG, "onDownloadPaused: ");
     }
 
     @Override
     public void onDownloadFailed(long l, long l1, String s, String s1) {
-        Log.d(TAG, "onDownloadFailed: ");
+        ILog.d(TAG, "onDownloadFailed: ");
     }
 
     @Override
     public void onDownloadFinished(long l, String s, String s1) {
-        Log.d(TAG, "onDownloadFinished: ");
+        ILog.d(TAG, "onDownloadFinished: ");
     }
 
     @Override
     public void onInstalled(String s, String s1) {
-        Log.d(TAG, "onInstalled: ");
+        ILog.d(TAG, "onInstalled: ");
     }
 }

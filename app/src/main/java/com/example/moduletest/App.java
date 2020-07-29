@@ -17,5 +17,6 @@ public class App extends Application {
         super.onCreate();
         //初始化GDT WM
         ADConfig.initAD(getApplicationContext(),appid,"5001121");
+        ADConfig.openDebug(BuildConfig.DEBUG);
     }
 }

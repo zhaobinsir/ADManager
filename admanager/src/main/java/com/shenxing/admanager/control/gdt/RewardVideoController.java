@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -10,6 +9,7 @@ import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.callback.RewardStatusListener;
+import com.shenxing.admanager.utils.ILog;
 
 /**
  * Created by zhaobinsir
@@ -142,63 +142,63 @@ public class RewardVideoController {
         return new RewardStatusListener() {
             @Override
             public void onAdExpired() {
-                Log.d(TAG, "onAdExpired: ");
+                ILog.d(TAG, "onAdExpired: ");
             }
 
             @Override
             public void onAdShowed() {
-                Log.d(TAG, "onAdShowed: ");
+                ILog.d(TAG, "onAdShowed: ");
             }
 
             @Override
             public void onAdInvalid() {
-                Log.d(TAG, "onAdInvalid: ");
+                ILog.d(TAG, "onAdInvalid: ");
             }
 
             @Override
             public void onADLoad() {
-                Log.d(TAG, "onADLoad: ");
+                ILog.d(TAG, "onADLoad: ");
                 showAd();
             }
 
             @Override
             public void onVideoCached() {
-                Log.d(TAG, "onVideoCached: ");
+                ILog.d(TAG, "onVideoCached: ");
             }
 
             @Override
             public void onADShow() {
-                Log.d(TAG, "onADShow: ");
+                ILog.d(TAG, "onADShow: ");
             }
 
             @Override
             public void onADExpose() {
-                Log.d(TAG, "onADExpose: ");
+                ILog.d(TAG, "onADExpose: ");
             }
 
             @Override
             public void onReward() {
-                Log.d(TAG, "onReward: ");
+                ILog.d(TAG, "onReward: ");
             }
 
             @Override
             public void onADClick() {
-                Log.d(TAG, "onADClick: ");
+                ILog.d(TAG, "onADClick: ");
             }
 
             @Override
             public void onVideoComplete() {
-                Log.d(TAG, "onVideoComplete: ");
+                ILog.d(TAG, "onVideoComplete: ");
             }
 
             @Override
             public void onADClose() {
-                Log.d(TAG, "onADClose: ");
+                ILog.d(TAG, "onADClose: ");
             }
 
             @Override
             public void onError(AdError adError) {
-                Log.d(TAG, "onError: "+adError);
+                ILog.d(TAG, "onError: "+adError);
             }
         };
     }

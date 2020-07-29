@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.IntRange;
@@ -18,6 +17,7 @@ import com.shenxing.admanager.bean.BindDisLike;
 import com.shenxing.admanager.bean.BindDownload;
 import com.shenxing.admanager.bean.BindExpressInteract;
 import com.shenxing.admanager.utils.DislikeDialog;
+import com.shenxing.admanager.utils.ILog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -103,7 +103,7 @@ public class BannerControllerWM {
             weakReference = new WeakReference<>(context);
         }
         Point screenSize= UIUtils.getScreenInfo(weakReference.get());
-        Log.d(TAG, "loadBanner: screenSize " + screenSize.x);
+        ILog.d(TAG, "loadBanner: screenSize " + screenSize.x);
         adSlot = new AdSlot.Builder()
                 .setCodeId(codeId) //广告位id
                 .setSupportDeepLink(true)
@@ -121,13 +121,13 @@ public class BannerControllerWM {
         mTTAdNative.loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.d(TAG, "onError: code,message " + code + "," + message);
+                ILog.d(TAG, "onError: code,message " + code + "," + message);
                 container.removeAllViews();
             }
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: ");
+                ILog.d(TAG, "onNativeExpressAdLoad: ");
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
@@ -167,8 +167,8 @@ public class BannerControllerWM {
                 return;
             }
 
-            final DislikeDialog dislikeDialog = new DislikeDialog(weakReference.get(), words);
-            dislikeDialog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
+            final DislikeDialog dislikeDiaILog = new DislikeDialog(weakReference.get(), words);
+            dislikeDiaILog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
                 @Override
                 public void onItemClick(FilterWord filterWord) {
                     //屏蔽广告
@@ -176,7 +176,7 @@ public class BannerControllerWM {
                     container.removeAllViews();
                 }
             });
-            ad.setDislikeDialog(dislikeDialog);
+            ad.setDislikeDialog(dislikeDiaILog);
             return;
         }
         //使用默认模板中默认dislike弹出样式

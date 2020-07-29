@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +14,7 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.shenxing.admanager.bean.BindDownload;
+import com.shenxing.admanager.utils.ILog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -148,7 +148,7 @@ public class SplashControllerWM {
         }
         if (mIsExpress) {
             //个性化模板广告需要传入期望广告view的宽、高，单位dp，请传入实际需要的大小，
-            //比如：广告下方拼接logo、适配刘海屏等，需要考虑实际广告大小
+            //比如：广告下方拼接ILogo、适配刘海屏等，需要考虑实际广告大小
             float expressViewWidth = UIUtils.getScreenWidthDp(context);
             float expressViewHeight = UIUtils.getHeight(context);
             adSlot = new AdSlot.Builder()
@@ -179,7 +179,7 @@ public class SplashControllerWM {
             @Override
             @MainThread
             public void onError(int code, String message) {
-                Log.d(TAG, String.valueOf(message));
+                ILog.d(TAG, String.valueOf(message));
                 goToMainActivity();
             }
 
@@ -216,24 +216,24 @@ public class SplashControllerWM {
         ad.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
-                Log.d(TAG, "onAdClicked");
+                ILog.d(TAG, "onAdClicked");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                Log.d(TAG, "onAdShow");
+                ILog.d(TAG, "onAdShow");
             }
 
             @Override
             public void onAdSkip() {
-                Log.d(TAG, "onAdSkip");
+                ILog.d(TAG, "onAdSkip");
                 goToMainActivity();
 
             }
 
             @Override
             public void onAdTimeOver() {
-                Log.d(TAG, "onAdTimeOver");
+                ILog.d(TAG, "onAdTimeOver");
                 goToMainActivity();
             }
         });
@@ -253,7 +253,7 @@ public class SplashControllerWM {
                 Intent intent = new Intent(weakReference.get(), tagClass);
                 weakReference.get().startActivity(intent);
                 needFinish();
-            } else Log.e(TAG, "not set tagActivity, can't new task");
+            } else ILog.e(TAG, "not set tagActivity, can't new task");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,9 +1,10 @@
 package com.shenxing.admanager.bean;
 
-import android.util.Log;
+
 import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTAdDislike;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 
@@ -24,19 +25,19 @@ public class BindDisLike implements TTAdDislike.DislikeInteractionCallback {
 
     @Override
     public void onSelected(int i, String s) {
-        Log.d(TAG, "onSelected: ");
+        ILog.d(TAG, "onSelected: ");
         if (weakReference != null) {
             weakReference.get().removeAllViews();
-        }else Log.d(TAG, "onRenderSuccess: but ViewGroup null,it's maybe recycled");
+        }else ILog.d(TAG, "onRenderSuccess: but ViewGroup null,it's maybe recycled");
     }
 
     @Override
     public void onCancel() {
-        Log.d(TAG, "onCancel: ");
+        ILog.d(TAG, "onCancel: ");
     }
 
     @Override
     public void onRefuse() {
-        Log.d(TAG, "onRefuse: ");
+        ILog.d(TAG, "onRefuse: ");
     }
 }

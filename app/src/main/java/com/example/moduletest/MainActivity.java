@@ -68,27 +68,27 @@ public class MainActivity extends AppCompatActivity {
        /* splash.fetchSplashADShow(this, adContainer, skipTv, SPLASH_POS_ID,  3000,new SplashADListener() {
             @Override
             public void onADDismissed() {//点击跳过按钮
-                Log.d(TAG, "onADDismissed: ");
+                ILog.d(TAG, "onADDismissed: ");
             }
 
             @Override
             public void onNoAD(AdError adError) {
-                Log.d(TAG, "onNoAD: ");
+                ILog.d(TAG, "onNoAD: ");
             }
 
             @Override
             public void onADPresent() {
-                Log.d(TAG, "onADPresent: ");
+                ILog.d(TAG, "onADPresent: ");
             }
 
             @Override
             public void onADClicked() {
-                Log.d(TAG, "onADClicked: ");
+                ILog.d(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADTick(long millisUntilFinished) {
-                Log.d(TAG, "onADTick: ");
+                ILog.d(TAG, "onADTick: ");
                 if (skipTv != null) {
                     skipTv.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000f)));
                 }
@@ -96,49 +96,49 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onADExposure() {
-                Log.d(TAG, "onADExposure: ");
+                ILog.d(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADLoaded(long l) {
-                Log.d(TAG, "onADLoaded: ");
+                ILog.d(TAG, "onADLoaded: ");
             }
         });*/
         //预加载，关心回调
         /*splash.fetchSplashADOnly(this, skipTv, SPLASH_POS_ID, 3000,,new SplashADListener() {
             @Override
             public void onADDismissed() {
-                Log.d(TAG, "onADDismissed: ");
+                ILog.d(TAG, "onADDismissed: ");
             }
 
             @Override
             public void onNoAD(AdError adError) {
-                Log.d(TAG, "onNoAD: ");
+                ILog.d(TAG, "onNoAD: ");
             }
 
             @Override
             public void onADPresent() {
-                Log.d(TAG, "onADPresent: ");
+                ILog.d(TAG, "onADPresent: ");
             }
 
             @Override
             public void onADClicked() {
-                Log.d(TAG, "onADClicked: ");
+                ILog.d(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADTick(long l) {
-                Log.d(TAG, "onADTick: ");
+                ILog.d(TAG, "onADTick: ");
             }
 
             @Override
             public void onADExposure() {
-                Log.d(TAG, "onADExposure: ");
+                ILog.d(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADLoaded(long l) {
-                Log.d(TAG, "onADLoaded: ");
+                ILog.d(TAG, "onADLoaded: ");
                 splash.showSplashAD(adContainer);
             }
         });*/
@@ -213,5 +213,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 }

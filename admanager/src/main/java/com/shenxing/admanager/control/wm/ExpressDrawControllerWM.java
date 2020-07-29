@@ -1,7 +1,6 @@
 package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +12,7 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.shenxing.admanager.callback.ExpressDrawSimpleListener;
+import com.shenxing.admanager.utils.ILog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -103,7 +103,7 @@ public class ExpressDrawControllerWM {
         mTTAdNative.loadExpressDrawFeedAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d(TAG, "onError: "+i+":"+s);
+                ILog.d(TAG, "onError: "+i+":"+s);
                 if (simpleListener != null) {
                     simpleListener.onLoadError(i,s);
                 }
@@ -111,9 +111,9 @@ public class ExpressDrawControllerWM {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: ");
+                ILog.d(TAG, "onNativeExpressAdLoad: ");
                 if (ads == null || ads.isEmpty()) {
-                    Log.e(TAG, "onNativeExpressAdLoad: ad size 0 retrun" );
+                    ILog.e(TAG, "onNativeExpressAdLoad: ad size 0 retrun" );
                     return;
                 }
                 bindAdListener(ads,simpleListener);//一般仅有一条数据时的回调
@@ -128,12 +128,12 @@ public class ExpressDrawControllerWM {
             ad.setVideoAdListener(new TTNativeExpressAd.ExpressVideoAdListener() {
                 @Override
                 public void onVideoLoad() {
-                    Log.d(TAG, "onVideoLoad: ");
+                    ILog.d(TAG, "onVideoLoad: ");
                 }
 
                 @Override
                 public void onVideoError(int errorCode, int extraCode) {
-                    Log.d(TAG, "onVideoError: ");
+                    ILog.d(TAG, "onVideoError: ");
                     if (simpleListener!=null) {
                         simpleListener.onVideoError(errorCode,extraCode);
                     }
@@ -141,27 +141,27 @@ public class ExpressDrawControllerWM {
 
                 @Override
                 public void onVideoAdStartPlay() {
-                    Log.d(TAG, "onVideoAdStartPlay: ");
+                    ILog.d(TAG, "onVideoAdStartPlay: ");
                 }
 
                 @Override
                 public void onVideoAdPaused() {
-                    Log.d(TAG, "onVideoAdPaused: ");
+                    ILog.d(TAG, "onVideoAdPaused: ");
                 }
 
                 @Override
                 public void onVideoAdContinuePlay() {
-                    Log.d(TAG, "onVideoAdContinuePlay: ");
+                    ILog.d(TAG, "onVideoAdContinuePlay: ");
                 }
 
                 @Override
                 public void onProgressUpdate(long current, long duration) {
-                    Log.d(TAG, "onProgressUpdate: ");
+                    ILog.d(TAG, "onProgressUpdate: ");
                 }
 
                 @Override
                 public void onVideoAdComplete() {
-                    Log.d(TAG, "onVideoAdComplete: ");
+                    ILog.d(TAG, "onVideoAdComplete: ");
                     if (simpleListener!=null) {
                         simpleListener.onVideoAdComplete();
                     }
@@ -169,19 +169,19 @@ public class ExpressDrawControllerWM {
 
                 @Override
                 public void onClickRetry() {
-                    Log.d(TAG, "onClickRetry!");
+                    ILog.d(TAG, "onClickRetry!");
                 }
             });
             ad.setCanInterruptVideoPlay(true);//是否允许点击暂停视频播放
             ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
                 @Override
                 public void onAdClicked(View view, int type) {
-                    Log.d(TAG, "onAdClicked: ");
+                    ILog.d(TAG, "onAdClicked: ");
                 }
 
                 @Override
                 public void onAdShow(View view, int type) {
-                    Log.d(TAG, "onAdShow: ");
+                    ILog.d(TAG, "onAdShow: ");
                     if (simpleListener!=null) {
                         simpleListener.onAdShow(view,type);
                     }
@@ -189,7 +189,7 @@ public class ExpressDrawControllerWM {
 
                 @Override
                 public void onRenderFail(View view, String msg, int code) {
-                    Log.d(TAG, "onRenderFail: ");
+                    ILog.d(TAG, "onRenderFail: ");
                     if (simpleListener!=null) {
                         simpleListener.onRenderFail(view,msg,code);
                     }
@@ -197,7 +197,7 @@ public class ExpressDrawControllerWM {
 
                 @Override
                 public void onRenderSuccess(View view, float width, float height) {
-                    Log.d(TAG, "onRenderSuccess: ");
+                    ILog.d(TAG, "onRenderSuccess: ");
                     if (simpleListener!=null) {
                         simpleListener.onRenderSuccess(view,width,height);
                     }

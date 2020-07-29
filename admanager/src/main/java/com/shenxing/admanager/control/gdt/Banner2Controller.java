@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -12,6 +11,7 @@ import com.qq.e.ads.banner2.UnifiedBannerADListener;
 import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.doc.GDTDocument;
+import com.shenxing.admanager.utils.ILog;
 
 /**
  * Created by zhaobinsir
@@ -110,42 +110,42 @@ public class Banner2Controller  {
         return new UnifiedBannerADListener() {
             @Override
             public void onNoAD(AdError adError) {
-                Log.e(TAG, "onNoAD: "+adError.getErrorMsg());
+                ILog.e(TAG, "onNoAD: "+adError.getErrorMsg());
             }
 
             @Override
             public void onADReceive() {
-                Log.e(TAG, "onADReceive: ");
+                ILog.e(TAG, "onADReceive: ");
             }
 
             @Override
             public void onADExposure() {
-                Log.e(TAG, "onADExposure: ");
+                ILog.e(TAG, "onADExposure: ");
             }
 
             @Override
             public void onADClosed() {
-                Log.e(TAG, "onADClosed: " );
+                ILog.e(TAG, "onADClosed: " );
             }
 
             @Override
             public void onADClicked() {
-                Log.e(TAG, "onADClicked: ");
+                ILog.e(TAG, "onADClicked: ");
             }
 
             @Override
             public void onADLeftApplication() {
-                Log.e(TAG, "onADLeftApplication: ");
+                ILog.e(TAG, "onADLeftApplication: ");
             }
 
             @Override
             public void onADOpenOverlay() {
-                Log.e(TAG, "onADOpenOverlay: ");
+                ILog.e(TAG, "onADOpenOverlay: ");
             }
 
             @Override
             public void onADCloseOverlay() {
-                Log.e(TAG, "onADCloseOverlay: " );
+                ILog.e(TAG, "onADCloseOverlay: " );
             }
         };
     }

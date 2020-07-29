@@ -2,7 +2,6 @@ package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.IntRange;
@@ -18,6 +17,7 @@ import com.shenxing.admanager.bean.BindDisLike;
 import com.shenxing.admanager.bean.BindDownload;
 import com.shenxing.admanager.callback.InteractListener;
 import com.shenxing.admanager.utils.DislikeDialog;
+import com.shenxing.admanager.utils.ILog;
 import com.shenxing.admanager.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -128,7 +128,7 @@ public class InteractControllerWM {
         mTTAdNative.loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.e(TAG, "load error : " + code + ", " + message);
+                ILog.e(TAG, "load error : " + code + ", " + message);
                 if (simpleListener != null) {
                     simpleListener.onLoadError(code, message);
                 }
@@ -136,7 +136,7 @@ public class InteractControllerWM {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                Log.d(TAG, "onNativeExpressAdLoad: ");
+                ILog.d(TAG, "onNativeExpressAdLoad: ");
                 if (ads == null || ads.size() == 0) {
                     return;
                 }
@@ -173,7 +173,7 @@ public class InteractControllerWM {
         return new TTNativeExpressAd.AdInteractionListener() {
             @Override
             public void onAdDismiss() {
-                Log.d(TAG, "onAdDismiss: ADClose");
+                ILog.d(TAG, "onAdDismiss: ADClose");
                 if (simpleListener != null) {
                     simpleListener.onAdDismiss();
                 }
@@ -181,12 +181,12 @@ public class InteractControllerWM {
 
             @Override
             public void onAdClicked(View view, int type) {
-                Log.d(TAG, "onAdClicked");
+                ILog.d(TAG, "onAdClicked");
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                Log.d(TAG, "onAdShow");
+                ILog.d(TAG, "onAdShow");
                 if (simpleListener != null) {
                     simpleListener.onAdShow(view, type);
                 }
@@ -194,7 +194,7 @@ public class InteractControllerWM {
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
-                Log.e("ExpressView", "render fail:");
+                ILog.e("ExpressView", "render fail:");
                 if (simpleListener != null) {
                     simpleListener.onRenderFail(view, msg, code);
                 }
@@ -205,7 +205,7 @@ public class InteractControllerWM {
                 if (simpleListener != null) {
                     simpleListener.onRenderSuccess(view, width, height);
                 }
-                Log.e("ExpressView", "render suc:");
+                ILog.e("ExpressView", "render suc:");
                 //返回view的宽高 单位 dp
                 if (needShow) {
                     ad.showInteractionExpressAd(weakReference.get());
@@ -223,14 +223,14 @@ public class InteractControllerWM {
                 return;
             }
 
-            final DislikeDialog dislikeDialog = new DislikeDialog(weakReference.get(), words);
-            dislikeDialog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
+            final DislikeDialog dislikeDiaILog = new DislikeDialog(weakReference.get(), words);
+            dislikeDiaILog.setOnDislikeItemClick(new DislikeDialog.OnDislikeItemClick() {
                 @Override
                 public void onItemClick(FilterWord filterWord) {
                     //屏蔽广告
                 }
             });
-            ad.setDislikeDialog(dislikeDialog);
+            ad.setDislikeDialog(dislikeDiaILog);
             return;
         }
         //使用默认模板中默认dislike弹出样式

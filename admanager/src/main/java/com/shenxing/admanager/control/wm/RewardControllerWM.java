@@ -1,7 +1,6 @@
 package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -13,6 +12,7 @@ import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.shenxing.admanager.bean.BindDownload;
 import com.shenxing.admanager.callback.RewardSimpleListener;
+import com.shenxing.admanager.utils.ILog;
 
 import java.lang.ref.WeakReference;
 
@@ -198,7 +198,7 @@ public class RewardControllerWM {
         mTTAdNative.loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.e(TAG, "Callback --> onError: " + code + ", " + String.valueOf(message));
+                ILog.e(TAG, "Callback --> onError: " + code + ", " + String.valueOf(message));
                 if (simpleListener != null) {
                     simpleListener.onAdError(message);
                 }
@@ -207,11 +207,11 @@ public class RewardControllerWM {
             //视频广告加载后，视频资源缓存到本地的回调，在此回调后，播放本地视频，流畅不阻塞。
             @Override
             public void onRewardVideoCached() {
-                Log.e(TAG, "Callback --> onRewardVideoCached");
+                ILog.e(TAG, "Callback --> onRewardVideoCached");
                 mIsLoaded = true;
                 if (needShow) {
                     mttRewardVideoAd.showRewardVideoAd(weakReference.get());
-                } else Log.e(TAG, "Callback --> onRewardVideoCached mNeedShow false");
+                } else ILog.e(TAG, "Callback --> onRewardVideoCached mNeedShow false");
                 if (simpleListener != null) {
                     simpleListener.onAdLoad(mttRewardVideoAd);
                 }
@@ -220,26 +220,26 @@ public class RewardControllerWM {
             //视频广告的素材加载完毕，比如视频url等，在此回调后，可以播放在线视频，网络不好可能出现加载缓冲，影响体验。
             @Override
             public void onRewardVideoAdLoad(TTRewardVideoAd ad) {
-                Log.e(TAG, "Callback --> onRewardVideoAdLoad");
+                ILog.e(TAG, "Callback --> onRewardVideoAdLoad");
                 mIsLoaded = false;
                 mttRewardVideoAd = ad;
                 mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
 
                     @Override
                     public void onAdShow() {
-                        Log.d(TAG, "Callback --> rewardVideoAd show");
+                        ILog.d(TAG, "Callback --> rewardVideoAd show");
 
                     }
 
                     @Override
                     public void onAdVideoBarClick() {
-                        Log.d(TAG, "Callback --> rewardVideoAd bar click");
+                        ILog.d(TAG, "Callback --> rewardVideoAd bar click");
 
                     }
 
                     @Override
                     public void onAdClose() {
-                        Log.d(TAG, "Callback --> rewardVideoAd close");
+                        ILog.d(TAG, "Callback --> rewardVideoAd close");
                         if (simpleListener != null) {
                             simpleListener.onAdClose();
                         }
@@ -249,7 +249,7 @@ public class RewardControllerWM {
                     //视频播放完成回调
                     @Override
                     public void onVideoComplete() {
-                        Log.d(TAG, "Callback --> rewardVideoAd complete");
+                        ILog.d(TAG, "Callback --> rewardVideoAd complete");
                         if (simpleListener != null) {
                             simpleListener.onVideoComplete();
                         }
@@ -257,16 +257,16 @@ public class RewardControllerWM {
 
                     @Override
                     public void onVideoError() {
-                        Log.e(TAG, "Callback --> rewardVideoAd error");
+                        ILog.e(TAG, "Callback --> rewardVideoAd error");
 
                     }
 
                     //视频播放完成后，奖励验证回调，rewardVerify：是否有效，rewardAmount：奖励梳理，rewardName：奖励名称
                     @Override
                     public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
-                        String logString = "verify:" + rewardVerify + " amount:" + rewardAmount +
+                        String ILogString = "verify:" + rewardVerify + " amount:" + rewardAmount +
                                 " name:" + rewardName;
-                        Log.e(TAG, "Callback --> " + logString);
+                        ILog.e(TAG, "Callback --> " + ILogString);
                         if (simpleListener != null) {
                             simpleListener.onRewardVerify(rewardVerify,rewardAmount,rewardName);
                         }
@@ -274,7 +274,7 @@ public class RewardControllerWM {
 
                     @Override
                     public void onSkippedVideo() {
-                        Log.e(TAG, "Callback --> rewardVideoAd has onSkippedVideo");
+                        ILog.e(TAG, "Callback --> rewardVideoAd has onSkippedVideo");
                         if (simpleListener != null) {
                             simpleListener.onSkippedVideo();
                         }
