@@ -17,4 +17,10 @@ public interface RewardSimpleListener<T,M> extends SimpleListener {
      */
     void onAdError(M m);
 
+
+    /**
+     * 视频播放完成后，奖励验证回调，rewardVerify：是否有效，rewardAmount：奖励梳理，rewardName：奖励名称
+     */
+    void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName);
+
 }

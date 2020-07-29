@@ -37,9 +37,9 @@ public class FullScreenControllerWM {
 
     private FullScreenSimpleListener<TTFullScreenVideoAd, String> simpleListener;
 
-    public void setSimpleListener(FullScreenSimpleListener simpleListener) {
+    /*public void setSimpleListener(FullScreenSimpleListener simpleListener) {
         this.simpleListener = simpleListener;
-    }
+    }*/
 
     //1 预留接口， 2 简单接口回调 3 自定义AdSlot
 
@@ -51,13 +51,13 @@ public class FullScreenControllerWM {
      * @param orientation TTAdConstant.HORIZONTAL TTAdConstant.VERTICAL
      * @param simpleListener
      */
-    public void preAndShowScreenAd(@NonNull Activity context,
+    public void preAndShowFullScreenAd(@NonNull Activity context,
                                    @NonNull String codeId,
-                                   @IntRange(from = 2, to = 3) int orientation,
+                                   @IntRange(from = 1, to = 2) int orientation,
                                    @NonNull FullScreenSimpleListener simpleListener) {
         this.simpleListener = simpleListener;
-        preFullScreenAd(context, codeId, simpleListener, orientation);
         needShow = true;
+        loadFullScreenAd(context, codeId, orientation, null);
     }
 
     /**
@@ -70,13 +70,27 @@ public class FullScreenControllerWM {
      */
     public void preFullScreenAd(@NonNull Activity context,
                                 @NonNull String codeId,
-                                @NonNull FullScreenSimpleListener simpleListener,
-                                @IntRange(from = 2, to = 3) int orientation
+                                @IntRange(from = 1, to = 2) int orientation,
+                                @NonNull FullScreenSimpleListener simpleListener
+
     ) {
         needShow = false;
         this.simpleListener = simpleListener;
         loadFullScreenAd(context, codeId, orientation, null);
     }
+
+
+    /**
+     *预加载接口 ，开发者自行自己处理回调， 可参考loadFullScreenAd方法，或官方文档
+     **/
+    public void preFullScreenAd(@NonNull Activity context,
+                                  @NonNull String codeId,
+                                  @IntRange(from = 1, to = 2) int orientation,
+                                  @NonNull TTAdNative.FullScreenVideoAdListener listener){
+        needShow = false;
+        loadFullScreenAd(context,codeId,orientation,listener);
+    }
+
 
     /**
      * 全屏广告，原生接口（麻烦，需要自行处理）
@@ -87,15 +101,14 @@ public class FullScreenControllerWM {
      * @param listener
      */
     //基类
-    public void loadFullScreenAd(@NonNull Activity context,
+    private void loadFullScreenAd(@NonNull Activity context,
                                 @NonNull String codeId,
-                                @IntRange(from = 2, to = 3) int orientation,
+                                @IntRange(from = 1, to = 2) int orientation,
                                 TTAdNative.FullScreenVideoAdListener listener) {
         if (weakReference == null||mTTAdNative==null) {
             weakReference = new WeakReference<>(context);
             mTTAdNative = TTAdSdk.getAdManager().createAdNative(weakReference.get());
         }
-        needShow = false;
         if (isExpress) {
             adSlot = new AdSlot.Builder()
                     .setCodeId(codeId)
@@ -126,6 +139,9 @@ public class FullScreenControllerWM {
             @Override
             public void onError(int code, String message) {
                 Log.e(TAG, "Callback --> onError: " + code + ", " + String.valueOf(message));
+                if (simpleListener != null) {
+                    simpleListener.onAdError(code+":"+message);
+                }
             }
 
             @Override
@@ -252,6 +268,15 @@ public class FullScreenControllerWM {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 资源释放
+     */
+    public void release() {
+        if (weakReference != null) {
+            weakReference.clear();
         }
     }
 

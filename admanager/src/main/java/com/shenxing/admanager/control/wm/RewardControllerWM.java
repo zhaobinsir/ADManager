@@ -10,8 +10,8 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
+import com.shenxing.admanager.bean.BindDownload;
 import com.shenxing.admanager.callback.RewardSimpleListener;
 
 import java.lang.ref.WeakReference;
@@ -33,19 +33,18 @@ public class RewardControllerWM {
     private int bannerNum = -1;//暂时最多仅支持3条,
 
     public boolean isExpress = false; //是否请求模板广告
-    public boolean needShow;//视频是否展示
+    private boolean needShow;//视频是否展示
     private boolean mIsLoaded = false; //视频是否加载完成
     private RewardSimpleListener<TTRewardVideoAd, String> simpleListener;
 
     /**
      * 设置简单回调，原回调废话太多
      *
-     * @param simpleListener
      * @see RewardSimpleListener
      */
-    public void setSimpleListener(RewardSimpleListener<TTRewardVideoAd, String> simpleListener) {
+    /*public void setSimpleListener(RewardSimpleListener<TTRewardVideoAd, String> simpleListener) {
         this.simpleListener = simpleListener;
-    }
+    }*/
 
 
     //预加载并展示视频，开发懒得处理回调，不支持自定义参数
@@ -53,7 +52,7 @@ public class RewardControllerWM {
                                    @NonNull String codeId,
                                    @IntRange(from = 1, to = 2) int orientation) {
         needShow = true;
-        loadRewardVideo(context, codeId, orientation, null);
+        defPreRewardVideo(context, codeId, orientation, null);
     }
 
     //预加载并展示视频，回调自己处理 ，不支持自定义参数
@@ -63,7 +62,7 @@ public class RewardControllerWM {
                                    @NonNull RewardSimpleListener simpleListener) {
         this.simpleListener = simpleListener;
         needShow = true;
-        loadRewardVideo(context, codeId, orientation, null);
+        defPreRewardVideo(context, codeId, orientation, null);
     }
 
     /**
@@ -80,7 +79,7 @@ public class RewardControllerWM {
                                @IntRange(from = 1, to = 2) int orientation) {
         needShow = false;
         this.simpleListener = simpleListener;
-        loadRewardVideo(context, codeId, orientation, null);
+        defPreRewardVideo(context, codeId, orientation, null);
     }
 
     /**
@@ -94,10 +93,10 @@ public class RewardControllerWM {
                                @NonNull AdSlot adSlot,
                                TTAdNative.RewardVideoAdListener listener) {
         needShow = false;
-        if (weakReference == null) {
+        if (weakReference == null||mTTAdNative==null) {
             weakReference = new WeakReference<>(context);
+            mTTAdNative = TTAdSdk.getAdManager().createAdNative(weakReference.get());
         }
-        mTTAdNative = TTAdSdk.getAdManager().createAdNative(weakReference.get());
         //step5:请求广告
         if (listener == null) {
             loadAd();
@@ -114,7 +113,7 @@ public class RewardControllerWM {
      * @param orientation VERTICAL=1,HORIZONTAL=2
      * @param listener
      */
-    public void loadRewardVideo(@NonNull Activity context,
+    public void defPreRewardVideo(@NonNull Activity context,
                                @NonNull String codeId,
                                @IntRange(from = 1, to = 2) int orientation,
                                TTAdNative.RewardVideoAdListener listener) {
@@ -127,10 +126,11 @@ public class RewardControllerWM {
                     .setCodeId(codeId)
                     .setSupportDeepLink(true)
                     .setRewardName("金币") //奖励的名称
-                    .setRewardAmount(bannerNum == -1 ? 1 : bannerNum)  //奖励的数量
+                    .setAdCount(bannerNum == -1 ? 1 : bannerNum)
+                    .setRewardAmount(3)  //奖励的数量
                     //模板广告需要设置期望个性化模板广告的大小,单位dp,激励视频场景，只要设置的值大于0即可
                     .setExpressViewAcceptedSize(500, 500)
-                    .setUserID("user123")//用户id,必传参数
+                    .setUserID("")//用户id, 可设置为空字符串
                     .setMediaExtra("media_extra") //附加参数，可选
                     .setOrientation(orientation) //必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                     .build();
@@ -140,8 +140,9 @@ public class RewardControllerWM {
                     .setCodeId(codeId)
                     .setSupportDeepLink(true)
                     .setRewardName("金币") //奖励的名称
-                    .setRewardAmount(bannerNum == -1 ? 1 : bannerNum)  //奖励的数量
-                    .setUserID("user123")//用户id,必传参数
+                    .setAdCount(bannerNum == -1 ? 1 : bannerNum)
+                    .setRewardAmount(3)  //奖励的数量
+                    .setUserID("")//用户id,可设置为空字符串
                     .setMediaExtra("media_extra") //附加参数，可选
                     .setOrientation(orientation) //必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                     .build();
@@ -165,7 +166,7 @@ public class RewardControllerWM {
                 mttRewardVideoAd.showRewardVideoAd(weakReference.get());
             } else {
                 if (simpleListener != null) {
-                    simpleListener.onAdError("not loaded,wait... or maybe not init");
+                    simpleListener.onAdError("video not loaded over,wait... or maybe not init");
                 }
             }
         } catch (Exception e) {
@@ -266,6 +267,9 @@ public class RewardControllerWM {
                         String logString = "verify:" + rewardVerify + " amount:" + rewardAmount +
                                 " name:" + rewardName;
                         Log.e(TAG, "Callback --> " + logString);
+                        if (simpleListener != null) {
+                            simpleListener.onRewardVerify(rewardVerify,rewardAmount,rewardName);
+                        }
                     }
 
                     @Override
@@ -276,38 +280,7 @@ public class RewardControllerWM {
                         }
                     }
                 });
-                mttRewardVideoAd.setDownloadListener(new TTAppDownloadListener() {
-                    @Override
-                    public void onIdle() {
-
-                    }
-
-                    @Override
-                    public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadActive==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
-
-                    }
-
-                    @Override
-                    public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadPaused===totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
-                    }
-
-                    @Override
-                    public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadFailed==totalBytes=" + totalBytes + ",currBytes=" + currBytes + ",fileName=" + fileName + ",appName=" + appName);
-                    }
-
-                    @Override
-                    public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-                        Log.d("DML", "onDownloadFinished==totalBytes=" + totalBytes + ",fileName=" + fileName + ",appName=" + appName);
-                    }
-
-                    @Override
-                    public void onInstalled(String fileName, String appName) {
-                        Log.d("DML", "onInstalled==" + ",fileName=" + fileName + ",appName=" + appName);
-                    }
-                });
+                mttRewardVideoAd.setDownloadListener(new BindDownload());
             }
         });
     }

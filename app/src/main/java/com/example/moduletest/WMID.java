@@ -30,7 +30,7 @@ package com.example.moduletest;
     String rewardIdv="901121593";
 
     String fullIdh="901121516";
-    String fullIdv="901121593";
+    String fullIdv="901121073";
 
     String express_draw="901121041";
     String draw="901121709";

@@ -9,6 +9,8 @@ import android.view.View;
  */
 public interface ExpressDrawSimpleListener {
 
+    void onLoadError(int errorCode, String extraCode);
+
     void onVideoError(int errorCode, int extraCode);
 
     void onVideoAdComplete();

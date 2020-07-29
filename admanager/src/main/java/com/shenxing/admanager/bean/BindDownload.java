@@ -11,7 +11,7 @@ import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
  */
 public class BindDownload implements TTAppDownloadListener {
 
-    public static final String TAG="ExpressInteractAD";
+    public static final String TAG="BindDownload";
 
     @Override
     public void onIdle() {

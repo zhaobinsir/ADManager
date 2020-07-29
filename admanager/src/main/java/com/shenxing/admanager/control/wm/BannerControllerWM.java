@@ -54,7 +54,7 @@ public class BannerControllerWM {
      */
     public void loadBannerMore(@NonNull Activity context,
                                @NonNull String codeId,
-                               @IntRange(from = 2,to = 3) int bannerNum,
+                               @IntRange(from = 1,to = 3) int bannerNum,
                                @NonNull TTAdNative.NativeExpressAdListener listener){
         this.bannerNum=bannerNum;
         loadBanner(context,codeId,null,listener);

@@ -1,11 +1,15 @@
 package com.shenxing.admanager.control.wm;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -38,9 +42,9 @@ public class DrawNativeControllerWM {
     private DrawNativeSimpleListener simpleListener;
     private int adNum=-1;//暂时最多仅支持3条
 
-    public void setSimpleListener(DrawNativeSimpleListener simpleListener) {
+    /*public void setSimpleListener(DrawNativeSimpleListener simpleListener) {
         this.simpleListener = simpleListener;
-    }
+    }*/
 
     //1 有自定义回调返回，2 公开绑定，3 原生回调绑定
 
@@ -51,7 +55,7 @@ public class DrawNativeControllerWM {
      * @param container
      * @param simpleListener
      */
-    public void loadDrawAd(@NonNull Activity context,
+    public void loadAndShowDrawAd(@NonNull Activity context,
                            @NonNull String coidId,
                             ViewGroup container,
                            DrawNativeSimpleListener simpleListener){
@@ -77,6 +81,13 @@ public class DrawNativeControllerWM {
 
     }
 
+    public void LoadDrawAd(@NonNull Activity context,
+                               @NonNull String coidId,
+                               @IntRange(from = 1,to = 3) int adNum,
+                               TTAdNative.DrawFeedAdListener listener){
+        this.adNum=adNum;
+        defLoadDrawAd(context,coidId,null,listener);
+    }
 
     /**
      * action3
@@ -85,9 +96,9 @@ public class DrawNativeControllerWM {
      * @param container
      * @param listener
      */
-    public void defLoadDrawAd(@NonNull Activity context,
+    private void defLoadDrawAd(@NonNull Activity context,
                               @NonNull String coidId,
-                           @NonNull ViewGroup container,
+                             ViewGroup container,
                            TTAdNative.DrawFeedAdListener listener){
         if (weakReference==null||container==null) {
             weakReference=new WeakReference<>(context);
@@ -164,18 +175,31 @@ public class DrawNativeControllerWM {
 
     //绑定广告行为, 公开此方法，注意当请求多条时需要自行调用此方法
     public void bindAdViewAndAction(TTDrawFeedAd ad,ViewGroup mAdContainer){
-        Button action = new Button(weakReference.get());
-        action.setText(ad.getButtonText());
-        Button btTitle = new Button(weakReference.get());
-        btTitle.setText(ad.getTitle());
 
+        View actionView = weakReference.get().getLayoutInflater().inflate(R.layout.native_draw_action_item,null,false);
+        TextView title = actionView.findViewById(R.id.tv_title);
+        title.setText(ad.getTitle());
+
+        TextView desc = actionView.findViewById(R.id.tv_desc);
+        desc.setText(ad.getDescription());
+
+        Button action = actionView.findViewById(R.id.button_creative);
+        action.setText(ad.getButtonText());
+
+        int margin = (int) dip2Px(weakReference.get(), 10);
+        FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp1.gravity = Gravity.START | Gravity.BOTTOM;
+        lp1.leftMargin = margin;
+        lp1.bottomMargin = margin;
+        mAdContainer.addView(actionView, lp1);
 
         //响应点击区域的设置，分为普通的区域clickViews和创意区域creativeViews
         //clickViews中的view被点击会尝试打开广告落地页；creativeViews中的view被点击会根据广告类型
         //响应对应行为，如下载类广告直接下载，打开落地页类广告直接打开落地页。
         //注意：ad.getAdView()获取的view请勿放入这两个区域中。
         List<View> clickViews = new ArrayList<>();
-        clickViews.add(btTitle);
+        clickViews.add(title);
+        clickViews.add(desc);
         List<View> creativeViews = new ArrayList<>();
         creativeViews.add(action);
         ad.registerViewForInteraction(mAdContainer, clickViews, creativeViews, new TTNativeAd.AdInteractionListener() {
@@ -191,15 +215,20 @@ public class DrawNativeControllerWM {
 
             @Override
             public void onAdShow(TTNativeAd ad) {
-                Log.d(TAG, "onAdShow: ");
+                Log.d(TAG, "bind onAdShow: ");
             }
         });
+    }
+
+    private float dip2Px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return dipValue * scale + 0.5f;
     }
 
     /**
      * 资源释放
      */
-    public void releaseContext() {
+    public void release() {
         if (weakReference != null) {
             weakReference.clear();
         }
