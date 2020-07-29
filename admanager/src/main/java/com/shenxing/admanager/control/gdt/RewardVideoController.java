@@ -2,6 +2,7 @@ package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -16,11 +17,12 @@ import com.shenxing.admanager.callback.RewardStatusListener;
  * 激励视频
  * 参数文档：https://developers.adnet.qq.com/doc/android/union/union_reward_video
  */
-public class RewardVideoController implements RewardStatusListener{
+public class RewardVideoController {
+
+    public static final String TAG="RewardVideoController";
 
     private RewardVideoAD rewardVideoAD;
     private RewardStatusListener listener;
-
 
     /**
      * 预加载激励视频
@@ -75,7 +77,7 @@ public class RewardVideoController implements RewardStatusListener{
      */
     public void preAndShow(@NonNull Activity context, @NonNull String posid, boolean volumeOn ,RewardStatusListener listener){
         if (listener==null) {
-            rewardVideoAD=new RewardVideoAD(context,posid,this,volumeOn);
+            rewardVideoAD=new RewardVideoAD(context,posid,getRewardListener(),volumeOn);
             rewardVideoAD.loadAD();
             return;
         }
@@ -134,63 +136,70 @@ public class RewardVideoController implements RewardStatusListener{
         return listener;
     }
 
-    @Override
-    public void onAdExpired() {
 
-    }
 
-    @Override
-    public void onAdShowed() {
+    private RewardStatusListener getRewardListener(){
+        return new RewardStatusListener() {
+            @Override
+            public void onAdExpired() {
+                Log.d(TAG, "onAdExpired: ");
+            }
 
-    }
+            @Override
+            public void onAdShowed() {
+                Log.d(TAG, "onAdShowed: ");
+            }
 
-    @Override
-    public void onAdInvalid() {
+            @Override
+            public void onAdInvalid() {
+                Log.d(TAG, "onAdInvalid: ");
+            }
 
-    }
+            @Override
+            public void onADLoad() {
+                Log.d(TAG, "onADLoad: ");
+                showAd();
+            }
 
-    @Override
-    public void onADLoad() {
-        showAd();
-    }
+            @Override
+            public void onVideoCached() {
+                Log.d(TAG, "onVideoCached: ");
+            }
 
-    @Override
-    public void onVideoCached() {
+            @Override
+            public void onADShow() {
+                Log.d(TAG, "onADShow: ");
+            }
 
-    }
+            @Override
+            public void onADExpose() {
+                Log.d(TAG, "onADExpose: ");
+            }
 
-    @Override
-    public void onADShow() {
+            @Override
+            public void onReward() {
+                Log.d(TAG, "onReward: ");
+            }
 
-    }
+            @Override
+            public void onADClick() {
+                Log.d(TAG, "onADClick: ");
+            }
 
-    @Override
-    public void onADExpose() {
+            @Override
+            public void onVideoComplete() {
+                Log.d(TAG, "onVideoComplete: ");
+            }
 
-    }
+            @Override
+            public void onADClose() {
+                Log.d(TAG, "onADClose: ");
+            }
 
-    @Override
-    public void onReward() {
-
-    }
-
-    @Override
-    public void onADClick() {
-
-    }
-
-    @Override
-    public void onVideoComplete() {
-
-    }
-
-    @Override
-    public void onADClose() {
-
-    }
-
-    @Override
-    public void onError(AdError adError) {
-
+            @Override
+            public void onError(AdError adError) {
+                Log.d(TAG, "onError: "+adError);
+            }
+        };
     }
 }

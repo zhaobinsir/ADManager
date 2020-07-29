@@ -1,6 +1,7 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
@@ -15,7 +16,9 @@ import java.lang.ref.WeakReference;
  * 插屏2.0
  * 具体参数回调参考： https://developers.adnet.qq.com/doc/android/union/union_interstitial2_0
  */
-public class Interstitial2Controller implements UnifiedInterstitialADListener {
+public class Interstitial2Controller  {
+
+    public static final String TAG="Interstitial2Controller";
 
     private UnifiedInterstitialAD iad;
 
@@ -28,7 +31,7 @@ public class Interstitial2Controller implements UnifiedInterstitialADListener {
 
 
     // 非全屏插屏广告
-    public void prepareAD(Activity context, String posId){
+    public void preAndShowAD(Activity context, String posId){
         prepareAD(context,posId,null);
     }
 
@@ -46,13 +49,13 @@ public class Interstitial2Controller implements UnifiedInterstitialADListener {
             iad = null;
         }
         isFullAd = false;
-        iad = new UnifiedInterstitialAD(context, posId, listener == null ? this : listener);
+        iad = new UnifiedInterstitialAD(context, posId, listener == null ? getListener() : listener);
         setVideoOption();
         iad.loadAD();
     }
 
     //初始化全屏广告
-    public void prepareFullScreenAD(Activity context, String posId) {
+    public void preAndShowFullScreenAD(Activity context, String posId) {
         prepareFullScreenAD(context, posId, null);
     }
 
@@ -63,9 +66,11 @@ public class Interstitial2Controller implements UnifiedInterstitialADListener {
             iad.destroy();
             iad = null;
         }
-        weakReference=new WeakReference<>(context);
+        if (weakReference==null) {
+            weakReference=new WeakReference<>(context);
+        }
         isFullAd = true;
-        iad = new UnifiedInterstitialAD(context, posId, listener == null ? this : listener);
+        iad = new UnifiedInterstitialAD(context, posId, listener == null ? getListener() : listener);
         setVideoOption();
         iad.loadFullScreenAD();
     }
@@ -144,49 +149,54 @@ public class Interstitial2Controller implements UnifiedInterstitialADListener {
     }
 
 
-    @Override
-    public void onADReceive() {
-        if (isFullAd) {
-            if (weakReference != null) {
-                showFullScreenAD(weakReference.get());
+    private UnifiedInterstitialADListener getListener(){
+        return new UnifiedInterstitialADListener() {
+            @Override
+            public void onADReceive() {
+                Log.d(TAG, "onADReceive: ");
+                if (isFullAd) {
+                    if (weakReference != null) {
+                        showFullScreenAD(weakReference.get());
+                    }
+                }else {
+                    showInterAD();
+                }
             }
-        }else {
-            showInterAD();
-        }
-    }
 
-    @Override
-    public void onVideoCached() {
+            @Override
+            public void onVideoCached() {
+                Log.d(TAG, "onVideoCached: ");
+            }
 
-    }
+            @Override
+            public void onNoAD(AdError adError) {
+                Log.d(TAG, "onNoAD: ");
+            }
 
-    @Override
-    public void onNoAD(AdError adError) {
+            @Override
+            public void onADOpened() {
+                Log.d(TAG, "onADOpened: ");
+            }
 
-    }
+            @Override
+            public void onADExposure() {
+                Log.d(TAG, "onADExposure: ");
+            }
 
-    @Override
-    public void onADOpened() {
+            @Override
+            public void onADClicked() {
+                Log.d(TAG, "onADClicked: ");
+            }
 
-    }
+            @Override
+            public void onADLeftApplication() {
+                Log.d(TAG, "onADLeftApplication: ");
+            }
 
-    @Override
-    public void onADExposure() {
-
-    }
-
-    @Override
-    public void onADClicked() {
-
-    }
-
-    @Override
-    public void onADLeftApplication() {
-
-    }
-
-    @Override
-    public void onADClosed() {
-
+            @Override
+            public void onADClosed() {
+                Log.d(TAG, "onADClosed: ");
+            }
+        };
     }
 }

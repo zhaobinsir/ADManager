@@ -25,7 +25,7 @@ import java.util.List;
  * 原生广告
  * 广告回调参数说明参考： https://developers.adnet.qq.com/doc/android/union/union_native_express
  */
-public class NativeController implements NativeExpressAD.NativeExpressADListener{
+public class NativeController {
 
     public static final String TAG ="NativeController";
 
@@ -155,7 +155,7 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
         adList.clear();
         adCount=adcount;
         this.loadMoreListener=listener;
-        nativeExpressAD = new NativeExpressAD(context, getADSize(), posid, this);
+        nativeExpressAD = new NativeExpressAD(context, getADSize(), posid, getLoadMoreListener());
         ///参数设置
         setVdieoConfig();
         //
@@ -210,22 +210,77 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
 
     //广点通广告
 
-    @Override
-    public void onADLoaded(List<NativeExpressADView> list) {
-        if (interrupt) {
-            Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
-            return;
-        }
-        adList.addAll(list);
-        if (adCount>0) {
-            onRqCount();
-        }else {//回调
-            reset();
-            if (loadMoreListener != null) {
-                loadMoreListener.onAdLoad(adList);
-                adList.clear();
+    
+    private NativeExpressAD.NativeExpressADListener getLoadMoreListener(){
+        return new NativeStatusAdListener() {
+            @Override
+            public void onADLoaded(List<NativeExpressADView> list) {
+                Log.d(TAG, "onADLoaded: ");
+                if (interrupt) {
+                    Log.e(TAG, "onADLoaded: reqeust interrupt... will clear data");
+                    return;
+                }
+                adList.addAll(list);
+                if (adCount>0) {
+                    onRqCount();
+                }else {//回调
+                    reset();
+                    if (loadMoreListener != null) {
+                        loadMoreListener.onAdLoad(adList);
+                        adList.clear();
+                    }
+                }
             }
-        }
+
+            @Override
+            public void onRenderFail(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onRenderFail: ");
+            }
+
+            @Override
+            public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onRenderSuccess: ");
+            }
+
+            @Override
+            public void onADExposure(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADExposure: ");
+            }
+
+            @Override
+            public void onADClicked(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADClicked: ");
+            }
+
+            @Override
+            public void onADClosed(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADClosed: ");
+            }
+
+            @Override
+            public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADLeftApplication: ");
+            }
+
+            @Override
+            public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADOpenOverlay: ");
+            }
+
+            @Override
+            public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
+                Log.d(TAG, "onADCloseOverlay: ");
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                reset();
+                if (loadMoreListener != null) {
+                    loadMoreListener.onLoadError(adList);//存在之前加载成功的数据，的可能性
+                    adList.clear();
+                }
+            }
+        };
     }
 
     /**
@@ -234,55 +289,6 @@ public class NativeController implements NativeExpressAD.NativeExpressADListener
     private void reset() {
         loadMoreAd = false;
         adCount = 0;
-    }
-
-    @Override
-    public void onRenderFail(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADExposure(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADClicked(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADClosed(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onNoAD(AdError adError) {
-        reset();
-        if (loadMoreListener != null) {
-            loadMoreListener.onLoadError(adList);//存在之前加载成功的数据，的可能性
-            adList.clear();
-        }
     }
 
 

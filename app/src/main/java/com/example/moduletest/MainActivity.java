@@ -1,5 +1,6 @@
 package com.example.moduletest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -23,11 +24,10 @@ import hugo.weaving.DebugLog;
 
 import static com.example.moduletest.PositionId.NATIVE_EXPRESS_POS_ID_VIDEO;
 import static com.example.moduletest.PositionId.UNIFIED_BANNER_POS_ID;
-import static com.example.moduletest.PositionId.UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "MYTest";
     private ViewGroup adBanner;
     private ViewGroup adNative;
 
@@ -44,30 +44,127 @@ public class MainActivity extends AppCompatActivity {
         skipTv = findViewById(R.id.skip_view);
         adContainer = findViewById(R.id.ad_coutainer);
     }
-
+    //开屏展示
+    SplashADController splash;
     private void splash() {
-        SplashADController splash= ADManager.create(ADType.SPLASH_AD);
-//        splash.fetchSplashADShow(this,adContainer,skipTv,SPLASH_POS_ID, listener);
+        splash= ADManager.create(ADType.SPLASH_AD);
+        splash.setTagIntent(new Intent(this,Main2Activity.class));
+        /**
+         * 非预加载 开发者不关心回调
+         **/
+//        splash.fetchSplashADShow(this, adContainer, skipTv, SPLASH_POS_ID,  3000);
+
+        /**
+         * 预加载 开发者不关心回调
+         **/
+        /*splash.fetchSplashADOnly(this, skipTv, SPLASH_POS_ID,  3000);
+        adContainer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                splash.showSplashAD(adContainer);
+            }
+        }, 3000);*/
+        //非预加载，关心回调
+       /* splash.fetchSplashADShow(this, adContainer, skipTv, SPLASH_POS_ID,  3000,new SplashADListener() {
+            @Override
+            public void onADDismissed() {//点击跳过按钮
+                Log.d(TAG, "onADDismissed: ");
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                Log.d(TAG, "onNoAD: ");
+            }
+
+            @Override
+            public void onADPresent() {
+                Log.d(TAG, "onADPresent: ");
+            }
+
+            @Override
+            public void onADClicked() {
+                Log.d(TAG, "onADClicked: ");
+            }
+
+            @Override
+            public void onADTick(long millisUntilFinished) {
+                Log.d(TAG, "onADTick: ");
+                if (skipTv != null) {
+                    skipTv.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000f)));
+                }
+            }
+
+            @Override
+            public void onADExposure() {
+                Log.d(TAG, "onADExposure: ");
+            }
+
+            @Override
+            public void onADLoaded(long l) {
+                Log.d(TAG, "onADLoaded: ");
+            }
+        });*/
+        //预加载，关心回调
+        /*splash.fetchSplashADOnly(this, skipTv, SPLASH_POS_ID, 3000,,new SplashADListener() {
+            @Override
+            public void onADDismissed() {
+                Log.d(TAG, "onADDismissed: ");
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                Log.d(TAG, "onNoAD: ");
+            }
+
+            @Override
+            public void onADPresent() {
+                Log.d(TAG, "onADPresent: ");
+            }
+
+            @Override
+            public void onADClicked() {
+                Log.d(TAG, "onADClicked: ");
+            }
+
+            @Override
+            public void onADTick(long l) {
+                Log.d(TAG, "onADTick: ");
+            }
+
+            @Override
+            public void onADExposure() {
+                Log.d(TAG, "onADExposure: ");
+            }
+
+            @Override
+            public void onADLoaded(long l) {
+                Log.d(TAG, "onADLoaded: ");
+                splash.showSplashAD(adContainer);
+            }
+        });*/
     }
 
+    //激励视频
     private void rewardTest() {
         //----------注意先后调用顺序
         final RewardVideoController rewardVideo= ADManager.create(ADType.REWARD_AD);
 //      无回掉
-        rewardVideo.preAndShow(this,"6040295592058680",true);
+//        rewardVideo.preAndShow(this,"6040295592058680",false);
         //预加载
 //        rewardVideo.onPrepareAd(this,"6040295592058680",true, listener);
         //直接展示广告
 //        rewardVideo.preAndShow(this,"6040295592058680",true, listener);
+
     }
 
+    //插屏
     private void inters() {
         //插屏2.0
         final Interstitial2Controller interstitial2 = ADManager.create(ADType.UNINTER2_AD);
         //简单用法 非全屏
-        interstitial2.prepareAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL);
+//        interstitial2.preAndShowAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL);
         //简单用法 全屏
-//        interstitial2.prepareFullScreenAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL);
+//        interstitial2.preAndShowFullScreenAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL);
 
         // 回调onADReceive-》 调用 showInterAD
         //加载非全屏
@@ -76,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
         // 回调onADReceive-》 调用 showFullScreenAD
         // 加载全屏2.0
 //        interstitial2.prepareFullScreenAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL,listener);
-
-//        banner_native(banner2, natives);
     }
 
     private void banner_native() {

@@ -27,6 +27,7 @@ public class ADConfig {
      */
     public static void initAD(@NonNull Context context, @NonNull String gdtId,@NonNull String wmId){
         GDTADManager.getInstance().initWith(context, gdtId);
+        MultiProcessFlag.setMultiProcess(true);//广点通对多进程的支持
         TTAdSdk.init(context,
                 new TTAdConfig.Builder()
                         .appId(wmId)
@@ -65,7 +66,7 @@ public class ADConfig {
      * 广点通
      * @param ismulti 是否支持多进程
      */
-    public static void setGDTMultiProcess(boolean ismulti){
+   /* public static void setGDTMultiProcess(boolean ismulti){
         MultiProcessFlag.setMultiProcess(ismulti);
-    }
+    }*/
 }

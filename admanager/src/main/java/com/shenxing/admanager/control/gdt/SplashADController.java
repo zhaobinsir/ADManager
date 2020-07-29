@@ -1,12 +1,19 @@
 package com.shenxing.admanager.control.gdt;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
+import com.qq.e.comm.util.AdError;
 import com.shenxing.admanager.doc.GDTDocument;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by zhaobinsir
@@ -15,7 +22,14 @@ import com.shenxing.admanager.doc.GDTDocument;
  */
 public class SplashADController {
 
+    public static final String TAG="SplashADController";
+
     private SplashAD splashAD;//有效期30min
+    private Intent tagIntent;
+    private WeakReference<Activity> weakReference;
+
+    private TextView skipTv;
+    private static final String SKIP_TEXT = "点击跳过 %d";
 
     /**
      * 拉取开屏广告，开屏广告的构造方法有3种，详细说明请参考开发者文档。
@@ -30,26 +44,129 @@ public class SplashADController {
      * @param fetchDelay    拉取广告的超时时长：取值范围[3000, 5000]，设为0表示使用广点通SDK默认的超时时长。
      *
      */
-    public void fetchSplashADShow(Activity activity, ViewGroup adContainer, TextView skipContainer,
-                               String posId, SplashADListener adListener, int fetchDelay) {
-        splashAD = new SplashAD(activity, skipContainer, posId, adListener, fetchDelay);
-        splashAD.fetchAndShowIn(adContainer);
+    public void fetchSplashADShow(@NonNull Activity activity, @NonNull ViewGroup adContainer, @NonNull TextView skipContainer,
+                               @NonNull String posId,  @NonNull int fetchDelay,@NonNull SplashADListener adListener) {
+        deffetchSplashAD(activity,adContainer,skipContainer,posId,fetchDelay,adListener);
     }
 
     //预加载，不展示广告
-    public void fetchSplashADOnly(Activity activity, TextView skipContainer,
-                                  String posId, SplashADListener adListener, int fetchDelay) {
-        splashAD = new SplashAD(activity, skipContainer, posId, adListener, fetchDelay);
-        splashAD.fetchAdOnly();
+    public void fetchSplashADOnly(@NonNull Activity activity, @NonNull TextView skipContainer,
+                                  @NonNull String posId, @NonNull int fetchDelay,@NonNull SplashADListener adListener) {
+        deffetchSplashAD(activity,null,skipContainer,posId,fetchDelay,adListener);
     }
+
+    //以下为简单用法
+    public void fetchSplashADShow(@NonNull Activity activity, @NonNull ViewGroup adContainer, @NonNull TextView skipContainer,
+                                  @NonNull String posId,  @NonNull int fetchDelay) {
+        deffetchSplashAD(activity,adContainer,skipContainer,posId,fetchDelay,null);
+    }
+
+    public void fetchSplashADOnly(@NonNull Activity activity, @NonNull TextView skipContainer,
+                                  @NonNull String posId, @NonNull int fetchDelay) {
+        deffetchSplashAD(activity,null,skipContainer,posId,fetchDelay,null);
+    }
+
+    //基类
+    private void deffetchSplashAD(@NonNull Activity activity,  ViewGroup adContainer, @NonNull TextView skipContainer,
+                                  @NonNull String posId,  @NonNull int fetchDelay, SplashADListener adListener){
+        if (weakReference==null) {
+            weakReference=new WeakReference<>(activity);
+        }
+        splashAD = new SplashAD(activity, skipContainer, posId, adListener==null?getSplashListener():adListener, fetchDelay);
+        if (adContainer!=null) {
+            splashAD.fetchAndShowIn(adContainer);
+        }else {
+            splashAD.fetchAdOnly();
+        }
+    }
+
+//    用于跳转
+    public void setTagIntent(Intent tagIntent) {
+        this.tagIntent = tagIntent;
+    }
+
+    private SplashADListener getSplashListener(){
+        return new SplashADListener() {
+            @Override
+            public void onADDismissed() {
+                Log.d(TAG, "onADDismissed: ");
+                goToMainActivity();
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                Log.d(TAG, "onNoAD: "+adError.getErrorMsg());
+                goToMainActivity();
+            }
+
+            @Override
+            public void onADPresent() {
+                Log.d(TAG, "onADPresent: ");
+            }
+
+            @Override
+            public void onADClicked() {
+                Log.d(TAG, "onADClicked: ");
+            }
+
+            @Override
+            public void onADTick(long millisUntilFinished) {
+                Log.d(TAG, "onADTick: ");
+                if (skipTv != null) {
+                    skipTv.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000f)));
+                }
+            }
+
+            @Override
+            public void onADExposure() {
+                Log.d(TAG, "onADExposure: ");
+            }
+
+            @Override
+            public void onADLoaded(long l) {
+                Log.d(TAG, "onADLoaded: ");
+            }
+        };
+    }
+
+    private void goToMainActivity() {
+        try {
+            if (tagIntent != null) {//优先以Intent为准
+                weakReference.get().startActivity(tagIntent);
+                needFinish();
+                return;
+            }
+            else Log.e(TAG, "not set intent, can't new task");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //是否需要关闭当前页面
+    private void needFinish() {
+        if (tagIntent!=null
+                && weakReference != null
+                && weakReference.get() != null
+        ) {
+            weakReference.get().finish();
+            weakReference.clear();
+        }
+    }
+
 
     /**
      * 注意注意：必须要预调用加载 fetchSplashAD()，函数
      * @param view
      */
     public void showSplashAD(ViewGroup view){
-        if (splashAD != null) {
+        if (splashAD != null&&view!=null) {
             splashAD.showAd(view);
+        }
+    }
+
+    public void release(){
+        if (weakReference != null) {
+            weakReference.clear();
         }
     }
 

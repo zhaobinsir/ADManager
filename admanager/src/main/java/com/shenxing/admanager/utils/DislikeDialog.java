@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Create by hanweiwei on 14/12/2018
+ * Create by zhaobin
  */
 public class DislikeDialog extends TTDislikeDialogAbstract {
     final List<FilterWord> mList;

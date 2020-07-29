@@ -19,7 +19,7 @@ import com.shenxing.admanager.doc.GDTDocument;
  * banner2.0 控制类
  * 接口详情考文档：https://developers.adnet.qq.com/doc/android/union/union_banner2_0
  */
-public class Banner2Controller implements UnifiedBannerADListener {
+public class Banner2Controller  {
 
    public static final String TAG="Banner2Controller";
    private ViewGroup bannerContainer;
@@ -34,9 +34,8 @@ public class Banner2Controller implements UnifiedBannerADListener {
      * @param listener 回调监听
      * @see GDTDocument listener解释 -》133colum
      */
-   public UnifiedBannerView preBanner(@NonNull Activity context, @NonNull ViewGroup viewGroup, @NonNull String posId,  UnifiedBannerADListener listener){
+   public void preBanner(@NonNull Activity context, @NonNull ViewGroup viewGroup, @NonNull String posId,  UnifiedBannerADListener listener){
        initbanner(context, viewGroup, posId, listener);
-       return bv;
    }
 
    public void showBanner() {
@@ -62,7 +61,7 @@ public class Banner2Controller implements UnifiedBannerADListener {
             bv.destroy();
         }
         bannerContainer = viewGroup;
-        bv = new UnifiedBannerView(context, posId, listener==null?this:listener);
+        bv = new UnifiedBannerView(context, posId, listener==null?getListener():listener);
         bv.setRefresh(30);//默认30s刷新
         // 不需要传递tags使用下面构造函数
         // this.bv = new UnifiedBannerView(this, Constants.APPID, posId, this);
@@ -106,43 +105,48 @@ public class Banner2Controller implements UnifiedBannerADListener {
         }
     }
 
-    @Override
-    public void onNoAD(AdError adError) {
-        Log.e(TAG, "onNoAD: "+adError.getErrorMsg());
-    }
+    private UnifiedBannerADListener getListener(){
 
-    @Override
-    public void onADReceive() {
-        Log.e(TAG, "onADReceive: ");
-    }
+        return new UnifiedBannerADListener() {
+            @Override
+            public void onNoAD(AdError adError) {
+                Log.e(TAG, "onNoAD: "+adError.getErrorMsg());
+            }
 
-    @Override
-    public void onADExposure() {
-        Log.e(TAG, "onADExposure: ");
-    }
+            @Override
+            public void onADReceive() {
+                Log.e(TAG, "onADReceive: ");
+            }
 
-    @Override
-    public void onADClosed() {
-        Log.e(TAG, "onADClosed: " );
-    }
+            @Override
+            public void onADExposure() {
+                Log.e(TAG, "onADExposure: ");
+            }
 
-    @Override
-    public void onADClicked() {
-        Log.e(TAG, "onADClicked: ");
-    }
+            @Override
+            public void onADClosed() {
+                Log.e(TAG, "onADClosed: " );
+            }
 
-    @Override
-    public void onADLeftApplication() {
-        Log.e(TAG, "onADLeftApplication: ");
-    }
+            @Override
+            public void onADClicked() {
+                Log.e(TAG, "onADClicked: ");
+            }
 
-    @Override
-    public void onADOpenOverlay() {
-        Log.e(TAG, "onADOpenOverlay: ");
-    }
+            @Override
+            public void onADLeftApplication() {
+                Log.e(TAG, "onADLeftApplication: ");
+            }
 
-    @Override
-    public void onADCloseOverlay() {
-        Log.e(TAG, "onADCloseOverlay: " );
+            @Override
+            public void onADOpenOverlay() {
+                Log.e(TAG, "onADOpenOverlay: ");
+            }
+
+            @Override
+            public void onADCloseOverlay() {
+                Log.e(TAG, "onADCloseOverlay: " );
+            }
+        };
     }
 }
