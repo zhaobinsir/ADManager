@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.shenxing.admanager.ADConfig;
 
+
 /**
  * Created by zhaobinsir
  * on 2020/7/24.
@@ -17,6 +18,6 @@ public class App extends Application {
         super.onCreate();
         //初始化GDT WM
         ADConfig.initAD(getApplicationContext(),appid,"5001121");
-        ADConfig.openDebug(BuildConfig.DEBUG);
+        ADConfig.openDebug(true);
     }
 }

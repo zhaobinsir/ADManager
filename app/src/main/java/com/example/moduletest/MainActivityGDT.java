@@ -23,9 +23,10 @@ import java.util.List;
 import hugo.weaving.DebugLog;
 
 import static com.example.moduletest.PositionId.NATIVE_EXPRESS_POS_ID_VIDEO;
+import static com.example.moduletest.PositionId.SPLASH_POS_ID;
 import static com.example.moduletest.PositionId.UNIFIED_BANNER_POS_ID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityGDT extends AppCompatActivity {
 
     public static final String TAG = "MYTest";
     private ViewGroup adBanner;
@@ -43,16 +44,18 @@ public class MainActivity extends AppCompatActivity {
         adNative = findViewById(R.id.ad_native);
         skipTv = findViewById(R.id.skip_view);
         adContainer = findViewById(R.id.ad_coutainer);
+
+        splash();
     }
     //开屏展示
     SplashADController splash;
     private void splash() {
         splash= ADManager.create(ADType.SPLASH_AD);
-        splash.setTagIntent(new Intent(this,Main2Activity.class));
+        splash.setTagIntent(new Intent(this, Main2ActivityWM.class));
         /**
          * 非预加载 开发者不关心回调
          **/
-//        splash.fetchSplashADShow(this, adContainer, skipTv, SPLASH_POS_ID,  3000);
+        splash.fetchSplashADShow(this, adContainer, skipTv, SPLASH_POS_ID,  3000);
 
         /**
          * 预加载 开发者不关心回调
@@ -149,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         //----------注意先后调用顺序
         final RewardVideoController rewardVideo= ADManager.create(ADType.REWARD_AD);
 //      无回掉
-//        rewardVideo.preAndShow(this,"6040295592058680",false);
+        rewardVideo.preAndShow(this,"6040295592058680",false);
         //预加载
 //        rewardVideo.onPrepareAd(this,"6040295592058680",true, listener);
         //直接展示广告
@@ -175,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 //        interstitial2.prepareFullScreenAD(this,UNIFIED_VIDEO_VIDEO_ID_LARGE_VERTICAL,listener);
     }
 
+    //banner和native
     private void banner_native() {
         //加载banner
         Banner2Controller banner2 = ADManager.create(ADType.BANNER2_AD);

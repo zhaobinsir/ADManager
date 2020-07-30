@@ -43,6 +43,7 @@ android {
 repositories {
     flatDir {
         dirs 'libs', '../admanager/libs'
+//        dirs 'libs'
     }
 }
 

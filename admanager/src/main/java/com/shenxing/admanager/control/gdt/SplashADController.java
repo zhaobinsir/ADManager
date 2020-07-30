@@ -72,6 +72,7 @@ public class SplashADController {
         if (weakReference==null) {
             weakReference=new WeakReference<>(activity);
         }
+        skipTv=skipContainer;
         splashAD = new SplashAD(activity, skipContainer, posId, adListener==null?getSplashListener():adListener, fetchDelay);
         if (adContainer!=null) {
             splashAD.fetchAndShowIn(adContainer);

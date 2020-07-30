@@ -16,7 +16,7 @@ import com.shenxing.admanager.control.wm.NativeControllerWm;
 import com.shenxing.admanager.control.wm.RewardControllerWM;
 import com.shenxing.admanager.control.wm.SplashControllerWM;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2ActivityWM extends AppCompatActivity {
 
     public static final String TAG = "MYTest";
 

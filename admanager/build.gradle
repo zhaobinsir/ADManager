@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 19
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -17,7 +17,66 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
+
 }
+
+//生成源文件
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+//生成Javadoc文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+//文档打包成jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+//拷贝javadoc文件
+task copyDoc(type: Copy) {
+    from "${buildDir}/docs/"
+    into "docs"
+}
+
+//上传到JCenter所需要的源码文件
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+//解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+
+//发布到 Bintray
+publish {
+
+    userOrg = 'zhaobinsir'           //bintray.com 注册的用户名
+    groupId = 'com.zbb.admanager'   //以后访问 jcenter上此项目的路径，一般和库项目的包名一致
+    artifactId = 'ADManager'       //bintray.com 创建的 Package 名
+    publishVersion = '1.0'         //版本号
+    desc = '穿山甲网盟集合' //版本说明，随意
+    website = 'https://github.com/zhaobinsir/ADManager'    //关于这个开源项目的网站，随意
+}
+
+//执行命令
+//./gradlew clean build generatePomFileForReleasePublication bintrayUpload -PbintrayUser=zhaobinsir -PbintrayKey=baecd0367d47a5b28873ca1b206a8d3b6a11d5d9 -PdryRun=false
+//gradlew clean build bintrayUpload -PbintrayUser=zhaobinsir -PbintrayKey=baecd0367d47a5b28873ca1b206a8d3b6a11d5d9 -PdryRun=false
+
 
 repositories {
     flatDir {
@@ -27,13 +86,10 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly  'androidx.appcompat:appcompat:1.1.0'
     //24 穿山甲需要配置
-    implementation 'com.android.support:support-v4:24.2.0'
-   /* implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'*/
-    api (name:'GDTSDK.unionNormal.4.232.1102', ext:'aar')
-    api (name:'open_ad_sdk', ext:'aar')
+    compileOnly  'com.android.support:support-v4:24.2.0'
+
+    api (name: 'GDTSDK.unionNormal.4.232.1102', ext: 'aar')
+    api (name: 'open_ad_sdk', ext: 'aar')
 }
