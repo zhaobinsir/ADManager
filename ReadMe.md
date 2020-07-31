@@ -1,3 +1,6 @@
+直接食用：implementation 'com.zbb.admanager:ADManager:1.1'
+
+
 GDT&WM 使用说明： 作者：zhaobin
 
 #说明：具体用法参考demo
