@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'//添加
-
+apply plugin: 'com.kezong.fat-aar'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -20,8 +20,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-
 }
 
 //生成源文件
@@ -48,6 +46,7 @@ task copyDoc(type: Copy) {
     into "docs"
 }
 
+
 //上传到JCenter所需要的源码文件
 artifacts {
     archives javadocJar
@@ -64,7 +63,6 @@ tasks.withType(Javadoc) {
 
 //发布到 Bintray
 publish {
-
     userOrg = 'zhaobinsir'           //bintray.com 注册的用户名
     groupId = 'com.zbb.admanager'   //以后访问 jcenter上此项目的路径，一般和库项目的包名一致
     artifactId = 'ADManager'       //bintray.com 创建的 Package 名
@@ -83,13 +81,21 @@ repositories {
         dirs 'libs'
     }
 }
+//允许远程依赖
+configurations.embed.transitive = true
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly  'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.appcompat:appcompat:1.1.0'
     //24 穿山甲需要配置
-    compileOnly  'com.android.support:support-v4:24.2.0'
+    compileOnly 'com.android.support:support-v4:24.2.0'
 
-    api (name: 'GDTSDK.unionNormal.4.232.1102', ext: 'aar')
-    api (name: 'open_ad_sdk', ext: 'aar')
+    /* api (name: 'GDTSDK.unionNormal.4.232.1102', ext: 'aar')
+     api (name: 'open_ad_sdk', ext: 'aar')*/
+
+    // local full aar dependency, just build in flavor1
+//    flavor1Embed project(path: ':GDTSDK.unionNormal.4.232.1102', configuration:'default')
+    // local full aar dependency, just build in debug
+    embed (name: 'GDTSDK.unionNormal.4.232.1102', ext: 'aar')
+    embed (name: 'open_ad_sdk', ext: 'aar')
 }
