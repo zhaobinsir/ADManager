@@ -1,5 +1,12 @@
 直接食用：implementation 'com.zbb.admanager:ADManager:1.1'
 
+或者导入module方式，二选一
+app中build.gradle 配置：repositories {
+              flatDir {
+                  dirs 'libs', '../admanager/libs'
+              }
+          }
+
 
 GDT&WM 使用说明： 作者：zhaobin
 
@@ -10,8 +17,3 @@ GDT&WM 使用说明： 作者：zhaobin
             ADConfig.initAD(getApplicationContext(),"gdtid","wmid");
             ADConfig.openDebug(BuildConfig.DEBUG);//是否开启debug
 
-app中build.gradle 配置：repositories {
-              flatDir {
-                  dirs 'libs', '../admanager/libs'
-              }
-          }
