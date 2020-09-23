@@ -16,3 +16,40 @@ app中build.gradle 配置：repositories {
             ADConfig.initAD(getApplicationContext(),"gdtid","wmid");
             ADConfig.openDebug(BuildConfig.DEBUG);//是否开启debug
 
+
+混淆配置
+-keep class com.qq.**{*;}
+-keep class com.bytedance.**{*;}
+-keep class com.pgl.**{*;}
+-keep class com.shenxing.**{*;}
+-keep class com.ss.**{*;}
+-keep class com.tencent.**{*;}
+-keep class c.t.maploc.lite.tsa.**{*;}
+-keep class yaq.gdtadv{*;}
+-keep class cn.mmachina.JniClient{*;}
+
+-keepattributes Signature
+
+-dontwarn com.androidquery.**
+-keep class com.androidquery.** { *;}
+
+-dontwarn tv.danmaku.**
+-keep class tv.danmaku.** { *;}
+
+-dontwarn androidx.**
+
+# 如果使用了tbs版本的sdk需要进行以下配置
+-keep class com.tencent.smtt.** { *; }
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+
+//网盟（穿山甲）
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep class com.androidquery.callback.** {*;}
+-keep class com.bytedance.sdk.openadsdk.service.TTDownloadProvider
+-keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
+-keep class com.pgl.sys.ces.* {*;}
+-keep class com.ss.sys.ces.*{*;}
+
