@@ -38,7 +38,6 @@ app中build.gradle 配置：repositories {
 
 -dontwarn androidx.**
 
-# 如果使用了tbs版本的sdk需要进行以下配置
 -keep class com.tencent.smtt.** { *; }
 -dontwarn dalvik.**
 -dontwarn com.tencent.smtt.**
