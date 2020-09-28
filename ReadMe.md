@@ -14,7 +14,6 @@ app中build.gradle 配置：repositories {
 
 初始化：   //初始化GDT WM  
             ADConfig.initAD(getApplicationContext(),"gdtid","wmid");  
-            
             ADConfig.openDebug(BuildConfig.DEBUG);//是否开启debug  
 
 
