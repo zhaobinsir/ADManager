@@ -25,6 +25,7 @@ public class PositionId {
   public static final String NATIVE_EXPRESS_SUPPORT_VIDEO_POS_ID = "2000629911207832";
   //支持视频模版样式的广告位
   public static final String CONTENT_AD_POS_ID = "5060323935699523";
+  public static final String NATIVE_VIDEO_TEXT = "6090892202222287";
   public static final String REWARD_VIDEO_AD_POS_ID_SUPPORT_H = "2090845242931421";//支持竖版出横版视频
   public static final String REWARD_VIDEO_AD_POS_ID_UN_SUPPORT_H = "4000898212322043";//不支持竖版出横版视频
   public static final String UNIFIED_BANNER_POS_ID = "4080052898050840";

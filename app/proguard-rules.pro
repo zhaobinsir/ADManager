@@ -19,3 +19,28 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.qq.**{*;}
+-keep class com.bytedance.**{*;}
+-keep class com.pgl.**{*;}
+-keep class com.shenxing.**{*;}
+-keep class com.ss.**{*;}
+-keep class com.tencent.**{*;}
+-keep class c.t.maploc.lite.tsa.**{*;}
+-keep class yaq.gdtadv{*;}
+-keep class cn.mmachina.JniClient{*;}
+
+-keepattributes Signature
+
+-dontwarn com.androidquery.**
+-keep class com.androidquery.** { *;}
+
+-dontwarn tv.danmaku.**
+-keep class tv.danmaku.** { *;}
+
+-dontwarn androidx.**
+
+# 如果使用了tbs版本的sdk需要进行以下配置
+-keep class com.tencent.smtt.** { *; }
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**

@@ -2,15 +2,12 @@ package com.example.moduletest;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.qq.e.ads.nativ.NativeExpressADView;
 import com.shenxing.admanager.annotate.ADType;
-import com.shenxing.admanager.callback.NativeLoadMoreListener;
 import com.shenxing.admanager.control.gdt.Banner2Controller;
 import com.shenxing.admanager.control.gdt.Interstitial2Controller;
 import com.shenxing.admanager.control.gdt.NativeController;
@@ -18,13 +15,10 @@ import com.shenxing.admanager.control.gdt.RewardVideoController;
 import com.shenxing.admanager.control.gdt.SplashADController;
 import com.shenxing.admanager.control.manager.ADManager;
 
-import java.util.List;
-
-import hugo.weaving.DebugLog;
-
-import static com.example.moduletest.PositionId.NATIVE_EXPRESS_POS_ID_VIDEO;
+import static com.example.moduletest.PositionId.NATIVE_VIDEO_TEXT;
 import static com.example.moduletest.PositionId.SPLASH_POS_ID;
 import static com.example.moduletest.PositionId.UNIFIED_BANNER_POS_ID;
+
 
 public class MainActivityGDT extends AppCompatActivity {
 
@@ -44,8 +38,7 @@ public class MainActivityGDT extends AppCompatActivity {
         adNative = findViewById(R.id.ad_native);
         skipTv = findViewById(R.id.skip_view);
         adContainer = findViewById(R.id.ad_coutainer);
-
-        splash();
+        nativetest();
     }
     //开屏展示
     SplashADController splash;
@@ -179,25 +172,28 @@ public class MainActivityGDT extends AppCompatActivity {
     }
 
     //banner和native
-    private void banner_native() {
+    private void banner() {
         //加载banner
         Banner2Controller banner2 = ADManager.create(ADType.BANNER2_AD);
-        //加载native
-        NativeController natives = ADManager.create(ADType.NATIVE_AD);
-
         if (banner2 != null) {
 //            banner2.setBannerSize(500,600);//
 //            简单用法
             banner2.preAndShowBanner(this, adBanner, UNIFIED_BANNER_POS_ID);
         }
 
+
+    }
+
+    private void nativetest(){
+        //加载native
+        NativeController natives = ADManager.create(ADType.NATIVE_AD);
         if (natives != null) {
             //仅加载一条native
-//            natives.loadAndShowNativeAd(this,adNative,NATIVE_EXPRESS_POS_ID_VIDEO);
+            natives.loadAndShowNativeAd(this,adNative,NATIVE_VIDEO_TEXT);
             //加载多条，必须实现回调
 //            natives.loadNativeAd(this, NATIVE_EXPRESS_POS_ID_VIDEO, 10, listener);
             //加载更多广告 记得调用 natives.destroy(); 在activiy stop/onDestory中
-            natives.loadNativeAdMore(this, NATIVE_EXPRESS_POS_ID_VIDEO, 55, new NativeLoadMoreListener<NativeExpressADView>() {
+           /* natives.loadNativeAdMore(this, NATIVE_VIDEO_TEXT, 11, new NativeLoadMoreListener<NativeExpressADView>() {
                 @DebugLog
                 @Override
                 public void onAdLoad(List<NativeExpressADView> list) {
@@ -210,7 +206,7 @@ public class MainActivityGDT extends AppCompatActivity {
                 public void onLoadError(List<NativeExpressADView> list) {
                     Log.e(TAG, "onNoAd: " + list.size());
                 }
-            });
+            });*/
         }
     }
 

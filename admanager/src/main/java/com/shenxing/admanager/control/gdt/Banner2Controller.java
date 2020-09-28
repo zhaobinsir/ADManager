@@ -19,7 +19,7 @@ import com.shenxing.admanager.utils.ILog;
  * banner2.0 控制类
  * 接口详情考文档：https://developers.adnet.qq.com/doc/android/union/union_banner2_0
  */
-public class Banner2Controller  {
+ public class Banner2Controller  {
 
    public static final String TAG="Banner2Controller";
    private ViewGroup bannerContainer;
