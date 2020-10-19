@@ -40,7 +40,11 @@
 
 -dontwarn androidx.**
 
+-keep class com.squareup.wire.** { *; }
+-keep class com.opensource.svgaplayer.proto.** { *; }
+
 # 如果使用了tbs版本的sdk需要进行以下配置
 -keep class com.tencent.smtt.** { *; }
 -dontwarn dalvik.**
 -dontwarn com.tencent.smtt.**
+

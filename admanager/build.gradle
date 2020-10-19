@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 19
-        versionName "1.1"
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -66,7 +66,7 @@ publish {
     userOrg = 'zhaobinsir'           //bintray.com 注册的用户名
     groupId = 'com.zbb.admanager'   //以后访问 jcenter上此项目的路径，一般和库项目的包名一致
     artifactId = 'ADManager'       //bintray.com 创建的 Package 名
-    publishVersion = '1.1'         //版本号
+    publishVersion = '1.2'         //版本号
     desc = '穿山甲网盟集合' //版本说明，随意
     website = 'https://github.com/zhaobinsir/ADManager'    //关于这个开源项目的网站，随意
 }
@@ -96,6 +96,6 @@ dependencies {
     // local full aar dependency, just build in flavor1
 //    flavor1Embed project(path: ':GDTSDK.unionNormal.4.232.1102', configuration:'default')
     // local full aar dependency, just build in debug
-    embed (name: 'GDTSDK.unionNormal.4.232.1102', ext: 'aar')
-    embed (name: 'open_ad_sdk', ext: 'aar')
+    embed (name: 'GDTSDK.unionNoPlugin.4.270.1140', ext: 'aar')
+    embed (name: 'open_ad_sdk.3.2.5.1', ext: 'aar')
 }

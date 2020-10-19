@@ -33,7 +33,7 @@ public class Main2ActivityWM extends AppCompatActivity {
         mBannerContainer = findViewById(R.id.banner_container);
         mSplashContainer = findViewById(R.id.splash_container);
         mDrawNative = findViewById(R.id.video_layout);
-
+        testBanner();
     }
 
     InteractControllerWM interWm;
@@ -503,7 +503,7 @@ public class Main2ActivityWM extends AppCompatActivity {
         /**
          * 加载一条banner，开发者不想处理回调。
          * */
-//        bannerwm.loadBanner(this,WMID.bannerId3,mBannerContainer);
+        bannerwm.loadBanner(this,WMID.bannerId3,mBannerContainer);
 
         /**
          * 加载一条banner，开发者自己处理回调。
@@ -556,7 +556,7 @@ public class Main2ActivityWM extends AppCompatActivity {
         /**
          * 1-3条展示 自行处理回调
          **/
-      /*  nativeWm.preNative(this, WMID.nativeId, 1,  new TTAdNative.NativeExpressAdListener() {
+       /* nativeWm.preNative(this, WMID.nativeId, 1,  new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int i, String s) {
                 ILog.d(TAG, "onError: "+i+"...."+s);
